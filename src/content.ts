@@ -1,33 +1,11 @@
-const SCROLL_SPEED_MULTIPLIER = 3;
+import config from '~/config';
+import { watchModifierKeys } from '~/utils/modifierKeys';
+import {
+  isHorizontallyScrollable,
+  isVerticallyScrollable,
+} from '~/utils/scroll';
 
-const isPressed = {
-  ctrlKey: false,
-  altKey: false,
-  shiftKey: false,
-};
-
-function handleKeyboardEvent(keyboardEvent: KeyboardEvent) {
-  isPressed.ctrlKey = keyboardEvent.ctrlKey;
-  isPressed.altKey = keyboardEvent.altKey;
-  isPressed.shiftKey = keyboardEvent.shiftKey;
-}
-
-window.addEventListener('keydown', handleKeyboardEvent);
-window.addEventListener('keyup', handleKeyboardEvent);
-
-function isHorizontallyScrollable(element: Element) {
-  return (
-    element.scrollWidth > element.clientWidth &&
-    ['scroll', 'auto'].includes(window.getComputedStyle(element).overflowX)
-  );
-}
-
-function isVerticallyScrollable(element: Element) {
-  return (
-    element.scrollHeight > element.clientHeight &&
-    ['scroll', 'auto'].includes(window.getComputedStyle(element).overflowY)
-  );
-}
+const modifierKeys = watchModifierKeys();
 
 function getElementsToScroll(wheelEvent: WheelEvent) {
   const eventTarget = wheelEvent.target as Element | null;
@@ -49,8 +27,16 @@ function getElementsToScroll(wheelEvent: WheelEvent) {
   };
 }
 
+function scrollElementHorizontally(element: Window | Element, deltaX: number) {
+  element.scrollBy(deltaX, 0);
+}
+
+function scrollElementVertically(element: Window | Element, deltaY: number) {
+  element.scrollBy(0, deltaY);
+}
+
 function handleWheelEvent(wheelEvent: WheelEvent) {
-  if (!isPressed.altKey || isPressed.ctrlKey) return;
+  if (!modifierKeys.alt.isPressed || modifierKeys.ctrl.isPressed) return;
 
   wheelEvent.preventDefault();
 
@@ -59,10 +45,16 @@ function handleWheelEvent(wheelEvent: WheelEvent) {
 
   const { deltaY: delta } = wheelEvent;
 
-  if (isPressed.shiftKey) {
-    elementToScrollHorizontally.scrollBy(delta * SCROLL_SPEED_MULTIPLIER, 0);
+  if (modifierKeys.shift.isPressed) {
+    scrollElementHorizontally(
+      elementToScrollHorizontally,
+      delta * config.scrollSpeedMultiplier,
+    );
   } else {
-    elementToScrollVertically.scrollBy(0, delta * SCROLL_SPEED_MULTIPLIER);
+    scrollElementVertically(
+      elementToScrollVertically,
+      delta * config.scrollSpeedMultiplier,
+    );
   }
 }
 

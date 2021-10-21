@@ -3,6 +3,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   mode: process.env.NODE_ENV ?? 'development',
+  devtool: false,
   entry: {
     content: path.resolve(__dirname, 'src', 'content.ts'),
   },
@@ -12,6 +13,15 @@ module.exports = {
   },
   resolve: {
     extensions: ['.js', '.ts'],
+  },
+  devServer: {
+    hot: false,
+    liveReload: false,
+    webSocketServer: false,
+    watchFiles: ['src/**/*.ts', 'public/**/*'],
+    devMiddleware: {
+      writeToDisk: true,
+    },
   },
 
   plugins: [

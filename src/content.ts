@@ -6,7 +6,7 @@ const isPressed = {
   shiftKey: false,
 };
 
-function handleKeyboardEvent(keyboardEvent) {
+function handleKeyboardEvent(keyboardEvent: KeyboardEvent) {
   isPressed.ctrlKey = keyboardEvent.ctrlKey;
   isPressed.altKey = keyboardEvent.altKey;
   isPressed.shiftKey = keyboardEvent.shiftKey;
@@ -15,32 +15,41 @@ function handleKeyboardEvent(keyboardEvent) {
 window.addEventListener('keydown', handleKeyboardEvent);
 window.addEventListener('keyup', handleKeyboardEvent);
 
-function isHorizontallyScrollable(element) {
+function isHorizontallyScrollable(element: Element) {
   return (
     element.scrollWidth > element.clientWidth &&
     ['scroll', 'auto'].includes(window.getComputedStyle(element).overflowX)
   );
 }
 
-function isVerticallyScrollable(element) {
+function isVerticallyScrollable(element: Element) {
   return (
     element.scrollHeight > element.clientHeight &&
     ['scroll', 'auto'].includes(window.getComputedStyle(element).overflowY)
   );
 }
 
-function getElementsToScroll(wheelEvent) {
+function getElementsToScroll(wheelEvent: WheelEvent) {
+  const eventTarget = wheelEvent.target as Element | null;
+
+  if (!eventTarget) {
+    return {
+      elementToScrollHorizontally: window,
+      elementToScrollVertically: window,
+    };
+  }
+
   return {
-    elementToScrollHorizontally: isHorizontallyScrollable(wheelEvent.target)
-      ? wheelEvent.target
+    elementToScrollHorizontally: isHorizontallyScrollable(eventTarget)
+      ? eventTarget
       : window,
-    elementToScrollVertically: isVerticallyScrollable(wheelEvent.target)
-      ? wheelEvent.target
+    elementToScrollVertically: isVerticallyScrollable(eventTarget)
+      ? eventTarget
       : window,
   };
 }
 
-function handleWheelEvent(wheelEvent) {
+function handleWheelEvent(wheelEvent: WheelEvent) {
   if (!isPressed.altKey || isPressed.ctrlKey) return;
 
   wheelEvent.preventDefault();

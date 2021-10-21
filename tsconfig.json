@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "module": "esnext",
+    "moduleResolution": "node",
+    "typeRoots": ["node_modules/@types", "src/@types"],
+    "allowJs": true,
+    "removeComments": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  },
+  "include": ["src/**/*.ts", "src/**/*.js"],
+  "exclude": ["node_modules"]
+}

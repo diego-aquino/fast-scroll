@@ -1,6 +1,13 @@
 const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
+const { version } = require('./package.json');
+
+const PUBLIC_DIR = path.resolve(__dirname, 'public');
+const OUTPUT_DIR = path
+  .resolve(__dirname, 'build', `fast-scroll-v${version}`)
+  .replace(/\./g, '-');
+
 module.exports = {
   mode: process.env.NODE_ENV ?? 'development',
   devtool: false,
@@ -8,7 +15,7 @@ module.exports = {
     content: path.resolve(__dirname, 'src', 'content.ts'),
   },
   output: {
-    path: path.resolve(__dirname, 'build'),
+    path: OUTPUT_DIR,
     chunkFilename: '[id].js',
   },
   resolve: {
@@ -26,12 +33,7 @@ module.exports = {
 
   plugins: [
     new CopyWebpackPlugin({
-      patterns: [
-        {
-          from: path.resolve(__dirname, 'public', 'manifest.json'),
-          to: path.resolve(__dirname, 'build'),
-        },
-      ],
+      patterns: [{ from: PUBLIC_DIR, to: OUTPUT_DIR }],
     }),
   ],
 

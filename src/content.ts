@@ -1,73 +1,37 @@
 import config from '~/config';
-import {
-  isHorizontallyScrollable,
-  isVerticallyScrollable,
-} from '~/utils/scroll';
+import { horizontalScroll, verticalScroll } from '~/utils/scroll';
 
-function getElementToScrollHorizontally(element: Element): Element {
-  if (isHorizontallyScrollable(element)) {
-    return element;
-  }
-  if (element.parentElement) {
-    return getElementToScrollHorizontally(element.parentElement);
-  }
-  return element;
-}
+function applyScrollSpeedMultiplier(
+  wheelEvent: WheelEvent,
+  scrollSpeedMultiplier: number,
+) {
+  wheelEvent.preventDefault();
 
-function getElementToScrollVertically(element: Element): Element {
-  if (isVerticallyScrollable(element)) {
-    return element;
-  }
-  if (element.parentElement) {
-    return getElementToScrollVertically(element.parentElement);
-  }
-  return element;
-}
+  const scrollDelta = wheelEvent.deltaY;
+  const multipliedScrollDelta = scrollDelta * scrollSpeedMultiplier;
 
-function getElementsToScroll(wheelEvent: WheelEvent) {
   const eventTarget = wheelEvent.target as Element | null;
 
-  if (!eventTarget) {
-    return {
-      elementToScrollHorizontally: window,
-      elementToScrollVertically: window,
-    };
+  if (!eventTarget) return;
+
+  if (wheelEvent.shiftKey) {
+    const elementToScroll = horizontalScroll.isScrollable(eventTarget)
+      ? eventTarget
+      : horizontalScroll.findFirstScrollableParent(eventTarget);
+
+    horizontalScroll.scrollBy(elementToScroll, multipliedScrollDelta);
+  } else {
+    const elementToScroll = verticalScroll.isScrollable(eventTarget)
+      ? eventTarget
+      : verticalScroll.findFirstScrollableParent(eventTarget);
+
+    verticalScroll.scrollBy(elementToScroll, multipliedScrollDelta);
   }
-
-  return {
-    elementToScrollHorizontally: getElementToScrollHorizontally(eventTarget),
-    elementToScrollVertically: getElementToScrollVertically(eventTarget),
-  };
-}
-
-function scrollElementHorizontally(element: Window | Element, deltaX: number) {
-  element.scrollBy(deltaX, 0);
-}
-
-function scrollElementVertically(element: Window | Element, deltaY: number) {
-  element.scrollBy(0, deltaY);
 }
 
 function handleWheelEvent(wheelEvent: WheelEvent) {
-  if (!wheelEvent.altKey || wheelEvent.ctrlKey) return;
-
-  wheelEvent.preventDefault();
-
-  const { elementToScrollHorizontally, elementToScrollVertically } =
-    getElementsToScroll(wheelEvent);
-
-  const { deltaY: delta } = wheelEvent;
-
-  if (wheelEvent.shiftKey) {
-    scrollElementHorizontally(
-      elementToScrollHorizontally,
-      delta * config.scrollSpeedMultiplier,
-    );
-  } else {
-    scrollElementVertically(
-      elementToScrollVertically,
-      delta * config.scrollSpeedMultiplier,
-    );
+  if (wheelEvent.altKey && !wheelEvent.ctrlKey) {
+    applyScrollSpeedMultiplier(wheelEvent, config.scrollSpeedMultiplier);
   }
 }
 

@@ -1,11 +1,8 @@
 import config from '~/config';
-import { watchModifierKeys } from '~/utils/modifierKeys';
 import {
   isHorizontallyScrollable,
   isVerticallyScrollable,
 } from '~/utils/scroll';
-
-const modifierKeys = watchModifierKeys();
 
 function getElementsToScroll(wheelEvent: WheelEvent) {
   const eventTarget = wheelEvent.target as Element | null;
@@ -36,7 +33,7 @@ function scrollElementVertically(element: Window | Element, deltaY: number) {
 }
 
 function handleWheelEvent(wheelEvent: WheelEvent) {
-  if (!modifierKeys.alt.isPressed || modifierKeys.ctrl.isPressed) return;
+  if (!wheelEvent.altKey || wheelEvent.ctrlKey) return;
 
   wheelEvent.preventDefault();
 
@@ -45,7 +42,7 @@ function handleWheelEvent(wheelEvent: WheelEvent) {
 
   const { deltaY: delta } = wheelEvent;
 
-  if (modifierKeys.shift.isPressed) {
+  if (wheelEvent.shiftKey) {
     scrollElementHorizontally(
       elementToScrollHorizontally,
       delta * config.scrollSpeedMultiplier,

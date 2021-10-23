@@ -17,6 +17,6 @@
       "~/*": ["src/*"]
     }
   },
-  "include": ["src/**/*.ts", "src/**/*.js"],
+  "include": ["src/**/*.ts", "src/**/*.js", "dev/**/*.js"],
   "exclude": ["node_modules"]
 }

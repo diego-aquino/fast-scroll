@@ -4,6 +4,26 @@ import {
   isVerticallyScrollable,
 } from '~/utils/scroll';
 
+function getElementToScrollHorizontally(element: Element): Element {
+  if (isHorizontallyScrollable(element)) {
+    return element;
+  }
+  if (element.parentElement) {
+    return getElementToScrollHorizontally(element.parentElement);
+  }
+  return element;
+}
+
+function getElementToScrollVertically(element: Element): Element {
+  if (isVerticallyScrollable(element)) {
+    return element;
+  }
+  if (element.parentElement) {
+    return getElementToScrollVertically(element.parentElement);
+  }
+  return element;
+}
+
 function getElementsToScroll(wheelEvent: WheelEvent) {
   const eventTarget = wheelEvent.target as Element | null;
 
@@ -15,12 +35,8 @@ function getElementsToScroll(wheelEvent: WheelEvent) {
   }
 
   return {
-    elementToScrollHorizontally: isHorizontallyScrollable(eventTarget)
-      ? eventTarget
-      : window,
-    elementToScrollVertically: isVerticallyScrollable(eventTarget)
-      ? eventTarget
-      : window,
+    elementToScrollHorizontally: getElementToScrollHorizontally(eventTarget),
+    elementToScrollVertically: getElementToScrollVertically(eventTarget),
   };
 }
 

@@ -1,3 +1,20 @@
+function findFirstScrollableElement(
+  this: { isScrollable: (elementToCheck: Element) => boolean },
+  element: Element,
+): Element {
+  if (element === document.body && document.scrollingElement) {
+    if (this.isScrollable(document.scrollingElement)) {
+      return document.scrollingElement;
+    }
+  }
+
+  if (this.isScrollable(element) || !element.parentElement) {
+    return element;
+  }
+
+  return findFirstScrollableElement.call(this, element.parentElement);
+}
+
 export const horizontalScroll = {
   scrollBy(element: Element, deltaX: number): void {
     element.scrollBy(deltaX, 0);
@@ -13,15 +30,7 @@ export const horizontalScroll = {
     return hasHorizontalScrollEnabled && hasHorizontalContentOverflow;
   },
 
-  findFirstScrollableParent(element: Element): Element {
-    if (!element.parentElement) {
-      return element;
-    }
-    if (horizontalScroll.isScrollable(element.parentElement)) {
-      return element.parentElement;
-    }
-    return horizontalScroll.findFirstScrollableParent(element.parentElement);
-  },
+  findFirstScrollableElement,
 };
 
 export const verticalScroll = {
@@ -39,13 +48,5 @@ export const verticalScroll = {
     return hasVerticalScrollEnabled && hasVerticalContentOverflow;
   },
 
-  findFirstScrollableParent(element: Element): Element {
-    if (!element.parentElement) {
-      return element;
-    }
-    if (verticalScroll.isScrollable(element.parentElement)) {
-      return element.parentElement;
-    }
-    return verticalScroll.findFirstScrollableParent(element.parentElement);
-  },
+  findFirstScrollableElement,
 };

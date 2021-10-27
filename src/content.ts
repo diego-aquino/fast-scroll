@@ -15,15 +15,13 @@ function applyScrollSpeedMultiplier(
   if (!eventTarget) return;
 
   if (wheelEvent.shiftKey) {
-    const elementToScroll = horizontalScroll.isScrollable(eventTarget)
-      ? eventTarget
-      : horizontalScroll.findFirstScrollableParent(eventTarget);
+    const elementToScroll =
+      horizontalScroll.findFirstScrollableElement(eventTarget);
 
     horizontalScroll.scrollBy(elementToScroll, multipliedScrollDelta);
   } else {
-    const elementToScroll = verticalScroll.isScrollable(eventTarget)
-      ? eventTarget
-      : verticalScroll.findFirstScrollableParent(eventTarget);
+    const elementToScroll =
+      verticalScroll.findFirstScrollableElement(eventTarget);
 
     verticalScroll.scrollBy(elementToScroll, multipliedScrollDelta);
   }

@@ -51,6 +51,7 @@
     "import/no-unresolved": "error",
     "lines-between-class-members": "off",
     "no-underscore-dangle": "off",
+    "no-param-reassign": "off",
     "import-helpers/order-imports": [
       "warn",
       {

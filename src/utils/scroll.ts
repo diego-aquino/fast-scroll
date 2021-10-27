@@ -55,3 +55,15 @@ export const scrollAxis = {
   horizontal: new HorizontalScrollAxis(),
   vertical: new VerticalScrollAxis(),
 };
+
+export function hasSmoothScrollEnabled(element: Element): boolean {
+  return window.getComputedStyle(element).scrollBehavior === 'smooth';
+}
+
+export function enableSmoothScroll(element: HTMLElement): void {
+  element.style.scrollBehavior = 'scroll';
+}
+
+export function disableSmoothScroll(element: HTMLElement): void {
+  element.style.scrollBehavior = 'auto';
+}

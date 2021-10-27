@@ -1,5 +1,10 @@
 import config from '~/config';
-import { scrollAxis } from '~/utils/scroll';
+import {
+  enableSmoothScroll,
+  disableSmoothScroll,
+  hasSmoothScrollEnabled,
+  scrollAxis,
+} from '~/utils/scroll';
 
 attachWheelListener();
 
@@ -8,9 +13,10 @@ function attachWheelListener() {
 }
 
 function handleWheelEvent(wheelEvent: WheelEvent) {
-  if (wheelEvent.altKey && !wheelEvent.ctrlKey) {
-    applyScrollSpeedMultiplier(wheelEvent, config.scrollSpeedMultiplier);
-  }
+  if (wheelEvent.defaultPrevented) return;
+  if (!wheelEvent.altKey || wheelEvent.ctrlKey) return;
+
+  applyScrollSpeedMultiplier(wheelEvent, config.scrollSpeedMultiplier);
 }
 
 function applyScrollSpeedMultiplier(
@@ -30,7 +36,18 @@ function applyScrollSpeedMultiplier(
     ? scrollAxis.horizontal
     : scrollAxis.vertical;
 
-  const elementToScroll =
-    selectedScrollAxis.findFirstScrollableElement(eventTarget);
+  const elementToScroll = selectedScrollAxis.findFirstScrollableElement(
+    eventTarget,
+  ) as HTMLElement;
+  const elementHasSmoothScroll = hasSmoothScrollEnabled(elementToScroll);
+
+  if (elementHasSmoothScroll) {
+    disableSmoothScroll(elementToScroll);
+  }
+
   selectedScrollAxis.scrollBy(elementToScroll, multipliedScrollDelta);
+
+  if (elementHasSmoothScroll) {
+    enableSmoothScroll(elementToScroll);
+  }
 }

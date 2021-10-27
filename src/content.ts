@@ -1,5 +1,17 @@
 import config from '~/config';
-import { horizontalScroll, verticalScroll } from '~/utils/scroll';
+import { scrollAxis } from '~/utils/scroll';
+
+attachWheelListener();
+
+function attachWheelListener() {
+  window.addEventListener('wheel', handleWheelEvent, { passive: false });
+}
+
+function handleWheelEvent(wheelEvent: WheelEvent) {
+  if (wheelEvent.altKey && !wheelEvent.ctrlKey) {
+    applyScrollSpeedMultiplier(wheelEvent, config.scrollSpeedMultiplier);
+  }
+}
 
 function applyScrollSpeedMultiplier(
   wheelEvent: WheelEvent,
@@ -14,23 +26,11 @@ function applyScrollSpeedMultiplier(
 
   if (!eventTarget) return;
 
-  if (wheelEvent.shiftKey) {
-    const elementToScroll =
-      horizontalScroll.findFirstScrollableElement(eventTarget);
+  const selectedScrollAxis = wheelEvent.shiftKey
+    ? scrollAxis.horizontal
+    : scrollAxis.vertical;
 
-    horizontalScroll.scrollBy(elementToScroll, multipliedScrollDelta);
-  } else {
-    const elementToScroll =
-      verticalScroll.findFirstScrollableElement(eventTarget);
-
-    verticalScroll.scrollBy(elementToScroll, multipliedScrollDelta);
-  }
+  const elementToScroll =
+    selectedScrollAxis.findFirstScrollableElement(eventTarget);
+  selectedScrollAxis.scrollBy(elementToScroll, multipliedScrollDelta);
 }
-
-function handleWheelEvent(wheelEvent: WheelEvent) {
-  if (wheelEvent.altKey && !wheelEvent.ctrlKey) {
-    applyScrollSpeedMultiplier(wheelEvent, config.scrollSpeedMultiplier);
-  }
-}
-
-window.addEventListener('wheel', handleWheelEvent, { passive: false });

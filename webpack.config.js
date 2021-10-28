@@ -1,4 +1,5 @@
 const path = require('path');
+const HTMLWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const { version } = require('./package.json');
@@ -12,6 +13,7 @@ module.exports = {
   mode: process.env.NODE_ENV ?? 'development',
   devtool: false,
   entry: {
+    popup: path.resolve(__dirname, 'src', 'popup.tsx'),
     content: path.resolve(__dirname, 'src', 'content.ts'),
   },
   output: {
@@ -19,7 +21,7 @@ module.exports = {
     chunkFilename: '[id].js',
   },
   resolve: {
-    extensions: ['.js', '.ts'],
+    extensions: ['.js', '.jsx', '.ts', '.tsx'],
   },
   devServer: {
     hot: false,
@@ -32,8 +34,22 @@ module.exports = {
   },
 
   plugins: [
+    new HTMLWebpackPlugin({
+      filename: 'popup.html',
+      template: path.resolve(__dirname, 'public', 'popup.html'),
+      inject: 'head',
+      chunks: ['popup'],
+    }),
     new CopyWebpackPlugin({
-      patterns: [{ from: PUBLIC_DIR, to: OUTPUT_DIR }],
+      patterns: [
+        {
+          from: PUBLIC_DIR,
+          to: OUTPUT_DIR,
+          globOptions: {
+            ignore: ['**/popup.html'],
+          },
+        },
+      ],
     }),
   ],
 

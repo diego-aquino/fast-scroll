@@ -19,6 +19,8 @@
     "@swc/core": "^1.2.105",
     "@types/archiver": "^5.1.1",
     "@types/node": "^16.11.1",
+    "@types/react": "^17.0.33",
+    "@types/react-dom": "^17.0.10",
     "@typescript-eslint/eslint-plugin": "^5.1.0",
     "@typescript-eslint/parser": "^5.1.0",
     "archiver": "^5.3.0",
@@ -35,6 +37,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.21.5",
     "eslint-plugin-react-hooks": "^1.7.0",
+    "html-webpack-plugin": "^5.5.0",
     "node-sass": "^6.0.1",
     "prettier": "^2.4.1",
     "sass-loader": "^12.2.0",
@@ -43,5 +46,9 @@
     "webpack": "^5.59.1",
     "webpack-cli": "^4.9.1",
     "webpack-dev-server": "^4.3.1"
+  },
+  "dependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
   }
 }

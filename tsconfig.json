@@ -6,6 +6,7 @@
     "moduleResolution": "node",
     "typeRoots": ["node_modules/@types", "src/@types"],
     "allowJs": true,
+    "jsx": "preserve",
     "removeComments": true,
     "noEmit": true,
     "esModuleInterop": true,
@@ -17,6 +18,12 @@
       "~/*": ["src/*"]
     }
   },
-  "include": ["src/**/*.ts", "src/**/*.js", "dev/**/*.js"],
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.js",
+    "src/**/*.jsx",
+    "dev/**/*.js"
+  ],
   "exclude": ["node_modules"]
 }

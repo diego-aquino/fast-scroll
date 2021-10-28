@@ -19,7 +19,8 @@
       "128": "images/brand/favicons/128.png",
       "256": "images/brand/favicons/256.png"
     },
-    "default_title": "Fast Scroll"
+    "default_title": "Fast Scroll",
+    "default_popup": "popup.html"
   },
   "content_scripts": [{ "matches": ["<all_urls>"], "js": ["content.js"] }]
 }

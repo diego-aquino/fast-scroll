@@ -40,9 +40,9 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(j|t)s$/,
+        test: /\.(j|t)sx?$/,
         exclude: /node_modules/,
-        use: ['babel-loader'],
+        use: ['swc-loader'],
       },
       {
         test: /\.s?css$/,

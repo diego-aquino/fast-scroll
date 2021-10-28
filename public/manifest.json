@@ -1,12 +1,25 @@
 {
   "name": "Fast Scroll",
-  "description": "Navigate faster by increasing your browser scroll speed!",
-  "version": "0.1.0",
+  "description": "Navigate faster by increasing your browser scroll speed",
+  "version": "0.2.1",
   "manifest_version": 3,
-  "content_scripts": [
-    {
-      "matches": ["<all_urls>"],
-      "js": ["content.js"]
-    }
-  ]
+  "author": "Diego Aquino <diegocruzdeaquino@gmail.com>",
+  "icons": {
+    "16": "images/brand/icons/16.png",
+    "32": "images/brand/icons/32.png",
+    "64": "images/brand/icons/64.png",
+    "128": "images/brand/icons/128.png",
+    "256": "images/brand/icons/256.png"
+  },
+  "action": {
+    "default_icon": {
+      "16": "images/brand/favicons/16.png",
+      "32": "images/brand/favicons/32.png",
+      "64": "images/brand/favicons/64.png",
+      "128": "images/brand/favicons/128.png",
+      "256": "images/brand/favicons/256.png"
+    },
+    "default_title": "Fast Scroll"
+  },
+  "content_scripts": [{ "matches": ["<all_urls>"], "js": ["content.js"] }]
 }

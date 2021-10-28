@@ -51,6 +51,7 @@
     "import/no-unresolved": "error",
     "lines-between-class-members": "off",
     "no-underscore-dangle": "off",
+    "no-param-reassign": "off",
     "import-helpers/order-imports": [
       "warn",
       {
@@ -65,7 +66,7 @@
       "warn",
       { "varsIgnorePattern": "^_", "argsIgnorePattern": "^_" }
     ],
-    "@typescript-eslint/no-use-before-define": "error",
+    "@typescript-eslint/no-use-before-define": "off",
     "@typescript-eslint/no-explicit-any": "warn"
   }
 }

@@ -1,5 +1,23 @@
 import config from '~/config';
-import { horizontalScroll, verticalScroll } from '~/utils/scroll';
+import {
+  enableSmoothScroll,
+  disableSmoothScroll,
+  hasSmoothScrollEnabled,
+  scrollAxis,
+} from '~/utils/scroll';
+
+attachWheelListener();
+
+function attachWheelListener() {
+  window.addEventListener('wheel', handleWheelEvent, { passive: false });
+}
+
+function handleWheelEvent(wheelEvent: WheelEvent) {
+  if (wheelEvent.defaultPrevented) return;
+  if (!wheelEvent.altKey || wheelEvent.ctrlKey) return;
+
+  applyScrollSpeedMultiplier(wheelEvent, config.scrollSpeedMultiplier);
+}
 
 function applyScrollSpeedMultiplier(
   wheelEvent: WheelEvent,
@@ -14,25 +32,22 @@ function applyScrollSpeedMultiplier(
 
   if (!eventTarget) return;
 
-  if (wheelEvent.shiftKey) {
-    const elementToScroll = horizontalScroll.isScrollable(eventTarget)
-      ? eventTarget
-      : horizontalScroll.findFirstScrollableParent(eventTarget);
+  const selectedScrollAxis = wheelEvent.shiftKey
+    ? scrollAxis.horizontal
+    : scrollAxis.vertical;
 
-    horizontalScroll.scrollBy(elementToScroll, multipliedScrollDelta);
-  } else {
-    const elementToScroll = verticalScroll.isScrollable(eventTarget)
-      ? eventTarget
-      : verticalScroll.findFirstScrollableParent(eventTarget);
+  const elementToScroll = selectedScrollAxis.findFirstScrollableElement(
+    eventTarget,
+  ) as HTMLElement;
+  const elementHasSmoothScroll = hasSmoothScrollEnabled(elementToScroll);
 
-    verticalScroll.scrollBy(elementToScroll, multipliedScrollDelta);
+  if (elementHasSmoothScroll) {
+    disableSmoothScroll(elementToScroll);
+  }
+
+  selectedScrollAxis.scrollBy(elementToScroll, multipliedScrollDelta);
+
+  if (elementHasSmoothScroll) {
+    enableSmoothScroll(elementToScroll);
   }
 }
-
-function handleWheelEvent(wheelEvent: WheelEvent) {
-  if (wheelEvent.altKey && !wheelEvent.ctrlKey) {
-    applyScrollSpeedMultiplier(wheelEvent, config.scrollSpeedMultiplier);
-  }
-}
-
-window.addEventListener('wheel', handleWheelEvent, { passive: false });

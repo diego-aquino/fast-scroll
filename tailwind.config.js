@@ -96,7 +96,7 @@ module.exports = {
       backgroundColor: ['active'],
       boxShadow: ['focus-visible'],
       textColor: ['active'],
-      textDecoration: ['active'],
+      textDecoration: ['active', 'focus-visible'],
     },
   },
   plugins: [],

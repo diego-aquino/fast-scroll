@@ -51,6 +51,20 @@ module.exports = {
         },
       ],
     }),
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: path.resolve(
+            __dirname,
+            'node_modules',
+            'focus-visible',
+            'dist',
+            'focus-visible.min.js',
+          ),
+          to: OUTPUT_DIR,
+        },
+      ],
+    }),
   ],
 
   module: {

@@ -1,26 +1,19 @@
 const archiver = require('archiver');
-const fs = require('fs');
+const filesystem = require('fs-extra');
 const path = require('path');
 
-const { version } = require('../../package.json');
+const { BUILD_DIR, COMPRESSED_BUILD_PATH } = require('../config');
 
-const ROOT_DIR = path.resolve(__dirname, '..', '..');
-const OUTPUT_DIR = path.resolve(ROOT_DIR, 'build');
-const BUILD_DIR = path
-  .resolve(OUTPUT_DIR, `fast-scroll-v${version}`)
-  .replace(/\./g, '-');
-const OUTPUT_PATH = `${BUILD_DIR}.zip`;
-
-const compressedOutput = fs.createWriteStream(OUTPUT_PATH);
+const compressedOutput = filesystem.createWriteStream(COMPRESSED_BUILD_PATH);
 const archive = archiver('zip');
 archive.pipe(compressedOutput);
 archive.directory(BUILD_DIR, false);
 
 compressedOutput.on('close', () => {
   console.log(
-    `compress: saved ${path.basename(
-      OUTPUT_PATH,
-    )} to the build directory (total ${archive.pointer()} bytes)`,
+    `[compress] Saved ${path.basename(
+      COMPRESSED_BUILD_PATH,
+    )} to ${BUILD_DIR} (total ${archive.pointer()} bytes)`,
   );
 });
 

@@ -8,6 +8,7 @@ class Config {
   private static DEFAULT_SCROLL_SPEED_MULTIPLIER = 3;
 
   private _scrollSpeedMultiplier = Config.DEFAULT_SCROLL_SPEED_MULTIPLIER;
+  hasBeenLoaded = false;
 
   constructor() {
     browser.storage.onChanged.addListener((changes) => {
@@ -43,6 +44,8 @@ class Config {
       scrollSpeedMultiplier:
         scrollSpeedMultiplier ?? this.scrollSpeedMultiplier,
     });
+
+    this.hasBeenLoaded = true;
   }
 }
 

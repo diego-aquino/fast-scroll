@@ -16,6 +16,8 @@ const PopUpPage: FC = () => {
     const speedMultiplier = parseFloat(speedMultiplierInput.value);
     const roundedNewSpeedMultiplier = round(speedMultiplier + increment, 1);
 
+    if (roundedNewSpeedMultiplier < 0) return;
+
     speedMultiplierInput.value = `${roundedNewSpeedMultiplier}x`;
     await config.setScrollSpeedMultiplier(roundedNewSpeedMultiplier);
   }

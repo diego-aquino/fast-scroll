@@ -1,24 +1,40 @@
-import { FC, useRef } from 'react';
+import { FC, useEffect, useRef } from 'react';
 
 import Button from '~/components/Button';
 import { MinusIcon, PlusIcon } from '~/components/icons';
 import Input from '~/components/Input';
+import config from '~/config';
 import { formatMultiplier } from '~/utils/format';
+import { round } from '~/utils/math';
 
-const SCROLL_SPEED_MULTIPLIER_INCREMENT = 0.1;
+const SPEED_MULTIPLIER_INCREMENT = 0.1;
 
 const PopUpPage: FC = () => {
   const speedMultiplierInputRef = useRef<HTMLInputElement>(null);
 
-  function handleIncrementScrollSpeedMultitplier(increment: number) {
+  async function incrementScrollSpeedMultiplier(increment: number) {
     const speedMultiplierInput = speedMultiplierInputRef.current;
     if (!speedMultiplierInput) return;
 
     const speedMultiplier = parseFloat(speedMultiplierInput.value);
-    const newScrollSpeedMultiplier = speedMultiplier + increment;
+    const newSpeedMultiplier = round(speedMultiplier + increment, 1);
 
-    speedMultiplierInput.value = formatMultiplier(newScrollSpeedMultiplier);
+    speedMultiplierInput.value = formatMultiplier(newSpeedMultiplier);
+    await config.setScrollSpeedMultiplier(newSpeedMultiplier);
   }
+
+  useEffect(() => {
+    (async () => {
+      await config.loadFromStorage();
+
+      const speedMultiplierInput = speedMultiplierInputRef.current;
+      if (!speedMultiplierInput) return;
+
+      speedMultiplierInput.value = formatMultiplier(
+        config.scrollSpeedMultiplier,
+      );
+    })();
+  }, []);
 
   return (
     <div className="p-4 space-y-1 bg-gray-50">
@@ -26,25 +42,21 @@ const PopUpPage: FC = () => {
         <Input
           ref={speedMultiplierInputRef}
           label="Scroll speed multiplier"
-          defaultValue="1x"
+          defaultValue={formatMultiplier(config.scrollSpeedMultiplier)}
           className="cursor-default"
           readOnly
         />
         <Button
           renderIcon={PlusIcon}
           onClick={() =>
-            handleIncrementScrollSpeedMultitplier(
-              SCROLL_SPEED_MULTIPLIER_INCREMENT,
-            )
+            incrementScrollSpeedMultiplier(SPEED_MULTIPLIER_INCREMENT)
           }
           className="mb-1"
         />
         <Button
           renderIcon={MinusIcon}
           onClick={() =>
-            handleIncrementScrollSpeedMultitplier(
-              -SCROLL_SPEED_MULTIPLIER_INCREMENT,
-            )
+            incrementScrollSpeedMultiplier(-SPEED_MULTIPLIER_INCREMENT)
           }
           className="mb-1"
         />

@@ -22,5 +22,6 @@
     "default_title": "Fast Scroll",
     "default_popup": "popup.html"
   },
+  "permissions": ["storage"],
   "content_scripts": [{ "matches": ["<all_urls>"], "js": ["content.js"] }]
 }

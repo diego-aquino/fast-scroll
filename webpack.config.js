@@ -9,6 +9,21 @@ const OUTPUT_DIR = path
   .resolve(__dirname, 'build', `fast-scroll-v${version}`)
   .replace(/\./g, '-');
 
+const BROWSER_POLYFILL_PATH = path.resolve(
+  __dirname,
+  'node_modules',
+  'webextension-polyfill',
+  'dist',
+  'browser-polyfill.min.js',
+);
+const FOCUS_VISIBLE_POLYFILL_PATH = path.resolve(
+  __dirname,
+  'node_modules',
+  'focus-visible',
+  'dist',
+  'focus-visible.min.js',
+);
+
 module.exports = {
   mode: process.env.NODE_ENV ?? 'development',
   devtool: false,
@@ -45,24 +60,10 @@ module.exports = {
         {
           from: PUBLIC_DIR,
           to: OUTPUT_DIR,
-          globOptions: {
-            ignore: ['**/popup.html'],
-          },
+          globOptions: { ignore: ['**/popup.html'] },
         },
-      ],
-    }),
-    new CopyWebpackPlugin({
-      patterns: [
-        {
-          from: path.resolve(
-            __dirname,
-            'node_modules',
-            'focus-visible',
-            'dist',
-            'focus-visible.min.js',
-          ),
-          to: OUTPUT_DIR,
-        },
+        { from: BROWSER_POLYFILL_PATH, to: OUTPUT_DIR },
+        { from: FOCUS_VISIBLE_POLYFILL_PATH, to: OUTPUT_DIR },
       ],
     }),
   ],

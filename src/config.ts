@@ -1,5 +1,3 @@
-import browser from 'webextension-polyfill';
-
 enum StorageKeys { // eslint-disable-line no-shadow
   scrollSpeedMultiplier = 'scrollSpeedMultiplier',
 }

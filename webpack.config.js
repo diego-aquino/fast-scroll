@@ -1,4 +1,5 @@
 const path = require('path');
+const HTMLWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const { version } = require('./package.json');
@@ -8,10 +9,26 @@ const OUTPUT_DIR = path
   .resolve(__dirname, 'build', `fast-scroll-v${version}`)
   .replace(/\./g, '-');
 
+const BROWSER_POLYFILL_PATH = path.resolve(
+  __dirname,
+  'node_modules',
+  'webextension-polyfill',
+  'dist',
+  'browser-polyfill.min.js',
+);
+const FOCUS_VISIBLE_POLYFILL_PATH = path.resolve(
+  __dirname,
+  'node_modules',
+  'focus-visible',
+  'dist',
+  'focus-visible.min.js',
+);
+
 module.exports = {
   mode: process.env.NODE_ENV ?? 'development',
   devtool: false,
   entry: {
+    popup: path.resolve(__dirname, 'src', 'popup.tsx'),
     content: path.resolve(__dirname, 'src', 'content.ts'),
   },
   output: {
@@ -19,7 +36,7 @@ module.exports = {
     chunkFilename: '[id].js',
   },
   resolve: {
-    extensions: ['.js', '.ts'],
+    extensions: ['.js', '.jsx', '.ts', '.tsx'],
   },
   devServer: {
     hot: false,
@@ -32,22 +49,35 @@ module.exports = {
   },
 
   plugins: [
+    new HTMLWebpackPlugin({
+      filename: 'popup.html',
+      template: path.resolve(__dirname, 'public', 'popup.html'),
+      inject: 'head',
+      chunks: ['popup'],
+    }),
     new CopyWebpackPlugin({
-      patterns: [{ from: PUBLIC_DIR, to: OUTPUT_DIR }],
+      patterns: [
+        {
+          from: PUBLIC_DIR,
+          to: OUTPUT_DIR,
+          globOptions: { ignore: ['**/popup.html'] },
+        },
+        { from: BROWSER_POLYFILL_PATH, to: OUTPUT_DIR },
+        { from: FOCUS_VISIBLE_POLYFILL_PATH, to: OUTPUT_DIR },
+      ],
     }),
   ],
 
   module: {
     rules: [
       {
-        test: /\.(j|t)s$/,
+        test: /\.(j|t)sx?$/,
         exclude: /node_modules/,
-        use: ['babel-loader'],
+        use: ['swc-loader'],
       },
       {
-        test: /\.s?css$/,
-        exclude: /node_modules/,
-        use: ['style-loader', 'css-loader', 'sass-loader'],
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader', 'postcss-loader'],
       },
     ],
   },

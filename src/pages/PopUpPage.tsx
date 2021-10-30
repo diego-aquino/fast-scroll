@@ -65,6 +65,10 @@ const PopUpPage: FC = () => {
     }
   }
 
+  function handleSpeedMultiplierFocus(event: FocusEvent<HTMLInputElement>) {
+    event.target.setSelectionRange(0, event.target.value.length);
+  }
+
   useEffect(() => {
     (async () => {
       await config.loadFromStorage();
@@ -83,6 +87,7 @@ const PopUpPage: FC = () => {
           ref={speedMultiplierInputRef}
           label="Scroll speed multiplier"
           onChange={handleSpeedMultiplierChange}
+          onFocus={handleSpeedMultiplierFocus}
           className="cursor-default"
         />
         <Button

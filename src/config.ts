@@ -41,7 +41,7 @@ class Config {
 
     Object.assign(this, {
       scrollSpeedMultiplier:
-        Number(scrollSpeedMultiplier) || this.scrollSpeedMultiplier,
+        scrollSpeedMultiplier ?? this.scrollSpeedMultiplier,
     });
   }
 }

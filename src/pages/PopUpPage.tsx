@@ -1,10 +1,9 @@
-import { FC, useEffect, useRef } from 'react';
+import { ChangeEvent, FC, FocusEvent, useEffect, useRef } from 'react';
 
 import Button from '~/components/Button';
 import { MinusIcon, PlusIcon } from '~/components/icons';
 import Input from '~/components/Input';
 import config from '~/config';
-import { formatMultiplier } from '~/utils/format';
 import { round } from '~/utils/math';
 
 const SPEED_MULTIPLIER_INCREMENT = 0.1;
@@ -17,10 +16,53 @@ const PopUpPage: FC = () => {
     if (!speedMultiplierInput) return;
 
     const speedMultiplier = parseFloat(speedMultiplierInput.value);
-    const newSpeedMultiplier = round(speedMultiplier + increment, 1);
+    const roundedNewSpeedMultiplier = round(speedMultiplier + increment, 1);
 
-    speedMultiplierInput.value = formatMultiplier(newSpeedMultiplier);
-    await config.setScrollSpeedMultiplier(newSpeedMultiplier);
+    speedMultiplierInput.value = `${roundedNewSpeedMultiplier}x`;
+    await config.setScrollSpeedMultiplier(roundedNewSpeedMultiplier);
+  }
+
+  const previousSpeedMultiplier = useRef<number>(1);
+
+  async function handleSpeedMultiplierChange(
+    event: ChangeEvent<HTMLInputElement>,
+  ) {
+    const speedMultiplierInput = speedMultiplierInputRef.current;
+    if (!speedMultiplierInput) return;
+
+    const selectionStart = event.target.selectionStart ?? 1;
+    const selectionEnd = event.target.selectionEnd ?? 1;
+
+    const normalizedMultiplier = event.target.value.replace(/[^\d.]/g, '');
+    const atLeastOneInvalidCharacterWasRemoved =
+      normalizedMultiplier.length < event.target.value.length - 1;
+
+    const isValid = !Number.isNaN(Number(normalizedMultiplier));
+
+    if (isValid) {
+      const multiplierAsNumber = Number(normalizedMultiplier);
+      const roundedMultiplierAsNumber = round(multiplierAsNumber, 1);
+
+      speedMultiplierInput.value = `${normalizedMultiplier}x`;
+      previousSpeedMultiplier.current = multiplierAsNumber;
+
+      if (atLeastOneInvalidCharacterWasRemoved) {
+        speedMultiplierInput.setSelectionRange(
+          selectionStart - 1,
+          selectionEnd - 1,
+        );
+      } else {
+        speedMultiplierInput.setSelectionRange(selectionStart, selectionEnd);
+      }
+
+      await config.setScrollSpeedMultiplier(roundedMultiplierAsNumber);
+    } else {
+      speedMultiplierInput.value = `${previousSpeedMultiplier.current}x`;
+      speedMultiplierInput.setSelectionRange(
+        selectionStart - 1,
+        selectionEnd - 1,
+      );
+    }
   }
 
   useEffect(() => {
@@ -30,9 +72,7 @@ const PopUpPage: FC = () => {
       const speedMultiplierInput = speedMultiplierInputRef.current;
       if (!speedMultiplierInput) return;
 
-      speedMultiplierInput.value = formatMultiplier(
-        config.scrollSpeedMultiplier,
-      );
+      speedMultiplierInput.value = `${config.scrollSpeedMultiplier}x`;
     })();
   }, []);
 
@@ -42,9 +82,8 @@ const PopUpPage: FC = () => {
         <Input
           ref={speedMultiplierInputRef}
           label="Scroll speed multiplier"
-          defaultValue={formatMultiplier(config.scrollSpeedMultiplier)}
+          onChange={handleSpeedMultiplierChange}
           className="cursor-default"
-          readOnly
         />
         <Button
           renderIcon={PlusIcon}

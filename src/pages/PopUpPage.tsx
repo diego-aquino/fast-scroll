@@ -1,14 +1,12 @@
 import { ChangeEvent, FC, FocusEvent, useEffect, useRef } from 'react';
 
-import Button from '~/components/Button';
-import { MinusIcon, PlusIcon } from '~/components/icons';
-import Input from '~/components/Input';
-import config from '~/config';
+import MultiplierInput from '~/components/forms/MultiplierInput';
+import useConfig from '~/hooks/useConfig';
+import { selectAllInputValue } from '~/utils/html';
 import { round } from '~/utils/math';
 
-const SPEED_MULTIPLIER_INCREMENT = 0.1;
-
 const PopUpPage: FC = () => {
+  const { config } = useConfig();
   const speedMultiplierInputRef = useRef<HTMLInputElement>(null);
 
   async function incrementScrollSpeedMultiplier(increment: number) {
@@ -39,72 +37,53 @@ const PopUpPage: FC = () => {
 
     const isValid = !Number.isNaN(Number(normalizedMultiplier));
 
-    if (isValid) {
-      const multiplierAsNumber = Number(normalizedMultiplier);
-      const roundedMultiplierAsNumber = round(multiplierAsNumber, 1);
-
-      speedMultiplierInput.value = `${normalizedMultiplier}x`;
-      previousSpeedMultiplier.current = multiplierAsNumber;
-
-      if (atLeastOneInvalidCharacterWasRemoved) {
-        speedMultiplierInput.setSelectionRange(
-          selectionStart - 1,
-          selectionEnd - 1,
-        );
-      } else {
-        speedMultiplierInput.setSelectionRange(selectionStart, selectionEnd);
-      }
-
-      await config.setScrollSpeedMultiplier(roundedMultiplierAsNumber);
-    } else {
+    if (!isValid) {
       speedMultiplierInput.value = `${previousSpeedMultiplier.current}x`;
       speedMultiplierInput.setSelectionRange(
         selectionStart - 1,
         selectionEnd - 1,
       );
+      return;
     }
+
+    const multiplierAsNumber = Number(normalizedMultiplier);
+    const roundedMultiplierAsNumber = round(multiplierAsNumber, 1);
+
+    speedMultiplierInput.value = `${normalizedMultiplier}x`;
+    previousSpeedMultiplier.current = multiplierAsNumber;
+
+    if (atLeastOneInvalidCharacterWasRemoved) {
+      speedMultiplierInput.setSelectionRange(
+        selectionStart - 1,
+        selectionEnd - 1,
+      );
+    } else {
+      speedMultiplierInput.setSelectionRange(selectionStart, selectionEnd);
+    }
+
+    await config.setScrollSpeedMultiplier(roundedMultiplierAsNumber);
   }
 
   function handleSpeedMultiplierFocus(event: FocusEvent<HTMLInputElement>) {
-    event.target.setSelectionRange(0, event.target.value.length);
+    selectAllInputValue(event.target);
   }
 
   useEffect(() => {
-    (async () => {
-      await config.loadFromStorage();
+    const speedMultiplierInput = speedMultiplierInputRef.current;
+    if (!speedMultiplierInput) return;
 
-      const speedMultiplierInput = speedMultiplierInputRef.current;
-      if (!speedMultiplierInput) return;
-
-      speedMultiplierInput.value = `${config.scrollSpeedMultiplier}x`;
-    })();
-  }, []);
+    speedMultiplierInput.value = `${config.scrollSpeedMultiplier}x`;
+  }, [config.hasBeenLoaded, config.scrollSpeedMultiplier]);
 
   return (
     <div className="p-4 space-y-1 bg-gray-50">
-      <div className="flex items-end justify-center space-x-1">
-        <Input
-          ref={speedMultiplierInputRef}
-          label="Scroll speed multiplier"
-          onChange={handleSpeedMultiplierChange}
-          onFocus={handleSpeedMultiplierFocus}
-          className="cursor-default"
-        />
-        <Button
-          renderIcon={PlusIcon}
-          onClick={() =>
-            incrementScrollSpeedMultiplier(SPEED_MULTIPLIER_INCREMENT)
-          }
-          className="mb-1"
-        />
-        <Button
-          renderIcon={MinusIcon}
-          onClick={() =>
-            incrementScrollSpeedMultiplier(-SPEED_MULTIPLIER_INCREMENT)
-          }
-          className="mb-1"
-        />
-      </div>
+      <MultiplierInput
+        ref={speedMultiplierInputRef}
+        label="Scroll speed multiplier"
+        onChange={handleSpeedMultiplierChange}
+        onFocus={handleSpeedMultiplierFocus}
+        onIncrementMultiplier={incrementScrollSpeedMultiplier}
+      />
     </div>
   );
 };

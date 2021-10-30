@@ -3,7 +3,7 @@ import { forwardRef, ForwardRefRenderFunction as FR } from 'react';
 
 import { HTMLInputProps } from '~/types/html';
 
-interface Props extends HTMLInputProps {
+export interface Props extends HTMLInputProps {
   label?: string;
 }
 

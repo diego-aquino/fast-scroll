@@ -14,6 +14,7 @@ interface Props extends InputProps {
 
 const MultiplierInput: FR<HTMLInputElement, Props> = (
   {
+    label,
     multiplierIncrement = DEFAULT_MULTIPLIER_INCREMENT,
     onIncrementMultiplier,
     ...rest
@@ -21,16 +22,24 @@ const MultiplierInput: FR<HTMLInputElement, Props> = (
   ref,
 ) => (
   <div className="flex items-end justify-center space-x-1">
-    <Input ref={ref} spellCheck={false} autoComplete="false" {...rest} />
+    <Input
+      ref={ref}
+      label={label}
+      spellCheck={false}
+      autoComplete="false"
+      {...rest}
+    />
     <Button
       renderIcon={PlusIcon}
       onClick={() => onIncrementMultiplier?.(multiplierIncrement)}
-      className="mb-1"
+      className="mb-3"
+      style={{ transform: label && 'translateY(37.5%)' }}
     />
     <Button
       renderIcon={MinusIcon}
       onClick={() => onIncrementMultiplier?.(-multiplierIncrement)}
-      className="mb-1"
+      className="mb-3"
+      style={{ transform: label && 'translateY(37.5%)' }}
     />
   </div>
 );

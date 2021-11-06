@@ -1,1 +1,5 @@
-export { FiPlus as PlusIcon, FiMinus as MinusIcon } from 'react-icons/fi';
+export {
+  FiPlus as PlusIcon,
+  FiMinus as MinusIcon,
+  FiZap as ZapIcon,
+} from 'react-icons/fi';

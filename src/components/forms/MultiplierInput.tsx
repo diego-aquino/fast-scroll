@@ -30,12 +30,16 @@ const MultiplierInput: FR<HTMLInputElement, Props> = (
       {...rest}
     />
     <Button
+      title="Increment"
+      aria-label="Increment"
       renderIcon={PlusIcon}
       onClick={() => onIncrementMultiplier?.(multiplierIncrement)}
       className="mb-3"
       style={{ transform: label && 'translateY(37.5%)' }}
     />
     <Button
+      title="Decrement"
+      aria-label="Decrement"
       renderIcon={MinusIcon}
       onClick={() => onIncrementMultiplier?.(-multiplierIncrement)}
       className="mb-3"

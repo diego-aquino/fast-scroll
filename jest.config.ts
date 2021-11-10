@@ -20,11 +20,15 @@ export default {
     '^~/([^\\.]*)$': '<rootDir>/src/$1',
     '^~tests/([^\\.]*)$': '<rootDir>/tests/$1',
   },
+  transform: {
+    '^.+\\.(ts|tsx)$': '@swc/jest',
+  },
 
   testMatch: ['<rootDir>/tests/**/*.test.[jt]s?(x)'],
   testPathIgnorePatterns: ['node_modules', 'build'],
 
-  transform: {
-    '^.+\\.(ts|tsx)$': '@swc/jest',
-  },
+  watchPlugins: [
+    'jest-watch-typeahead/filename',
+    'jest-watch-typeahead/testname',
+  ],
 };

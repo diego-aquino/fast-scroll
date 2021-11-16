@@ -4,7 +4,6 @@ export default {
   testEnvironment: 'jsdom',
   clearMocks: true,
 
-  collectCoverage: true,
   coverageDirectory: 'coverage',
   coverageProvider: 'v8',
   coverageReporters: ['json', 'lcov'],

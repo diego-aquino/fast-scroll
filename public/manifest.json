@@ -1,7 +1,7 @@
 {
   "name": "Fast Scroll",
   "description": "Navigate faster by increasing your browser's scroll speed",
-  "version": "0.2.1",
+  "version": "0.3.1",
   "manifest_version": 3,
   "author": "Diego Aquino <diegocruzdeaquino@gmail.com>",
   "icons": {

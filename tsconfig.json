@@ -15,15 +15,19 @@
     "skipLibCheck": true,
     "baseUrl": "./",
     "paths": {
-      "~/*": ["src/*"]
+      "~/*": ["src/*"],
+      "~tests/*": ["tests/*"]
     }
   },
   "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "src/**/*.js",
-    "src/**/*.jsx",
-    "dev/**/*.js"
+    "src/**/*.ts*",
+    "src/**/*.js*",
+    "tests/**/*.ts*",
+    "tests/**/*.js*",
+    "dev/**/*.ts*",
+    "dev/**/*.js*",
+    "*.ts*",
+    "*.js*"
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "build", "coverage"]
 }

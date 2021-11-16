@@ -1,6 +1,6 @@
 {
   "name": "fast-scroll",
-  "version": "0.2.1",
+  "version": "0.3.1",
   "description": "Navigate faster by increasing your browser's scroll speed",
   "main": "index.js",
   "repository": "git@github.com:diego-aquino/fast-scroll.git",
@@ -8,12 +8,22 @@
   "license": "GPL-3.0",
   "private": false,
   "scripts": {
+    "prepare": "husky install",
     "dev": "yarn build:clean && webpack serve",
     "build": "yarn build:clean && yarn build:check-types && yarn build:run && yarn build:compress",
     "build:clean": "rm -rf build/*",
     "build:check-types": "tsc  --pretty --noEmit",
     "build:run": "cross-env NODE_ENV=production webpack",
-    "build:compress": "node ./dev/build/compress.js"
+    "build:compress": "zx ./dev/build/compress.js",
+    "release:version": "zx ./dev/release/getVersion.js",
+    "release:upgrade": "zx ./dev/release/upgradeVersion.js",
+    "lint": "eslint ./src ./tests ./dev --ext 'js,jsx,ts,tsx'",
+    "format": "prettier --write .",
+    "test": "jest",
+    "test:types": "tsc  --pretty --noEmit",
+    "test:coverage": "jest --coverage",
+    "pre:commit": "yarn format && yarn lint",
+    "pre:push": "yarn test:types && yarn test"
   },
   "dependencies": {
     "@headlessui/react": "^1.4.1",
@@ -26,8 +36,14 @@
   },
   "devDependencies": {
     "@swc/cli": "^0.1.51",
-    "@swc/core": "^1.2.105",
+    "@swc/core": "^1.2.107",
+    "@swc/jest": "^0.2.5",
+    "@testing-library/dom": "^8.11.0",
+    "@testing-library/jest-dom": "^5.15.0",
+    "@testing-library/react": "^12.1.2",
+    "@testing-library/user-event": "^13.5.0",
     "@types/archiver": "^5.1.1",
+    "@types/fs-extra": "^9.0.13",
     "@types/node": "^16.11.1",
     "@types/react": "^17.0.33",
     "@types/react-dom": "^17.0.10",
@@ -49,7 +65,11 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.21.5",
     "eslint-plugin-react-hooks": "^1.7.0",
+    "fs-extra": "^10.0.0",
     "html-webpack-plugin": "^5.5.0",
+    "husky": "^7.0.4",
+    "jest": "^27.3.1",
+    "jest-watch-typeahead": "^1.0.0",
     "node-sass": "^6.0.1",
     "postcss": "^8.3.11",
     "postcss-focus-visible": "^6.0.1",
@@ -58,9 +78,11 @@
     "style-loader": "^3.3.1",
     "swc-loader": "^0.1.15",
     "tailwindcss": "^2.2.17",
+    "ts-node": "^10.4.0",
     "typescript": "^4.4.4",
     "webpack": "^5.59.1",
     "webpack-cli": "^4.9.1",
-    "webpack-dev-server": "^4.3.1"
+    "webpack-dev-server": "^4.3.1",
+    "zx": "^4.2.0"
   }
 }

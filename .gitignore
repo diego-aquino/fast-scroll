@@ -4,6 +4,9 @@
 # Dependency directories
 /node_modules
 
+# Test coverage
+/coverage
+
 # Environment variables files
 .env*.local
 

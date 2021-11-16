@@ -1,0 +1,51 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    environment: Production
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        env:
+          CACHE_NAME: yarn-cache
+        with:
+          path: ~/.cache/yarn
+          key: ${{ runner.os }}-yarn-${{ env.CACHE_NAME }}-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Install dependencies
+        run: yarn
+
+      - name: Generate build
+        run: yarn build
+
+      - name: Save release version to env
+        run: |
+          releaseVersion="$(node ./dev/release/getVersion.js)"
+          echo 'RELEASE_VERSION='$releaseVersion >> $GITHUB_ENV
+
+      - name: Create GitHub release
+        uses: ncipollo/release-action@v1
+        with:
+          name: Fast Scroll v${{ env.RELEASE_VERSION }}
+          tag: v${{ env.RELEASE_VERSION }}
+          commit: main
+          draft: true
+          allowUpdates: true
+          artifacts: 'build/*.zip'
+          token: ${{ secrets.GITHUB_TOKEN }}

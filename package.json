@@ -8,6 +8,7 @@
   "license": "GPL-3.0",
   "private": false,
   "scripts": {
+    "prepare": "husky install",
     "dev": "yarn build:clean && webpack serve",
     "build": "yarn build:clean && yarn build:check-types && yarn build:run && yarn build:compress",
     "build:clean": "rm -rf build/*",
@@ -15,8 +16,13 @@
     "build:run": "cross-env NODE_ENV=production webpack",
     "build:compress": "zx ./dev/build/compress.js",
     "release:upgrade": "zx ./dev/release/upgradeVersion.js",
+    "lint": "eslint ./src ./tests ./dev --ext 'js,jsx,ts,tsx'",
+    "format": "prettier --write .",
     "test": "jest",
-    "test:coverage": "jest --coverage"
+    "test:types": "tsc  --pretty --noEmit",
+    "test:coverage": "jest --coverage",
+    "pre:commit": "yarn format && yarn lint && yarn test:types",
+    "pre:push": "yarn test"
   },
   "dependencies": {
     "@headlessui/react": "^1.4.1",
@@ -60,6 +66,7 @@
     "eslint-plugin-react-hooks": "^1.7.0",
     "fs-extra": "^10.0.0",
     "html-webpack-plugin": "^5.5.0",
+    "husky": "^7.0.4",
     "jest": "^27.3.1",
     "jest-watch-typeahead": "^1.0.0",
     "node-sass": "^6.0.1",

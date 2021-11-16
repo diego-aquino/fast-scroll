@@ -2,7 +2,3 @@
 /yarn.lock
 
 /build
-/coverage
-
-/*.js
-/*.ts

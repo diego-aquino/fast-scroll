@@ -24,8 +24,10 @@
     "src/**/*.js*",
     "tests/**/*.ts*",
     "tests/**/*.js*",
-    "dev/**/*.js",
-    "jest.config.ts"
+    "dev/**/*.ts*",
+    "dev/**/*.js*",
+    "*.ts*",
+    "*.js*"
   ],
   "exclude": ["node_modules"]
 }

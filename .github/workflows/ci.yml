@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: [main, canary]
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        env:
+          CACHE_NAME: yarn-cache
+        with:
+          path: ~/.cache/yarn
+          key: ${{ runner.os }}-yarn-${{ env.CACHE_NAME }}-${{ hashFiles('/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Install dependencies
+        run: yarn
+
+      - name: Lint code
+        run: yarn lint
+
+      - name: Check types
+        run: yarn test:types
+
+      - name: Run tests
+        run: yarn test

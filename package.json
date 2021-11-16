@@ -13,8 +13,8 @@
     "build:clean": "rm -rf build/*",
     "build:check-types": "tsc  --pretty --noEmit",
     "build:run": "cross-env NODE_ENV=production webpack",
-    "build:compress": "yarn zx ./dev/build/compress.js",
-    "release:upgrade": "yarn zx ./dev/release/upgradeVersion.js",
+    "build:compress": "zx ./dev/build/compress.js",
+    "release:upgrade": "zx ./dev/release/upgradeVersion.js",
     "test": "jest",
     "test:coverage": "jest --coverage"
   },

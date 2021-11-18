@@ -31,13 +31,11 @@ jobs:
       - name: Install dependencies
         run: yarn
 
+      - name: Save necessary data to env
+        run: echo 'RELEASE_VERSION='$(node ./dev/release/getVersion.js) >> $GITHUB_ENV
+
       - name: Generate build
         run: yarn build
-
-      - name: Save release version to env
-        run: |
-          releaseVersion="$(node ./dev/release/getVersion.js)"
-          echo 'RELEASE_VERSION='$releaseVersion >> $GITHUB_ENV
 
       - name: Create GitHub release
         uses: ncipollo/release-action@v1
@@ -46,6 +44,6 @@ jobs:
           tag: v${{ env.RELEASE_VERSION }}
           commit: main
           draft: true
-          allowUpdates: true
+          allowUpdates: false
           artifacts: 'build/*.zip'
           token: ${{ secrets.GITHUB_TOKEN }}

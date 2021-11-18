@@ -18,11 +18,12 @@
     "release:version": "zx ./dev/release/getVersion.js",
     "release:upgrade": "zx ./dev/release/upgradeVersion.js",
     "lint": "eslint ./src ./tests ./dev --ext 'js,jsx,ts,tsx'",
-    "format": "prettier --write .",
+    "style:check": "prettier --check .",
+    "style:format": "prettier --write .",
     "test": "jest",
     "test:types": "tsc  --pretty --noEmit",
     "test:coverage": "jest --coverage",
-    "pre:commit": "yarn format && yarn lint",
+    "pre:commit": "yarn style:format && yarn lint",
     "pre:push": "yarn test:types && yarn test"
   },
   "dependencies": {

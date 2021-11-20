@@ -24,7 +24,7 @@
     "test:types": "tsc  --pretty --noEmit",
     "test:coverage": "jest --coverage",
     "pre:commit": "yarn style:format && yarn lint",
-    "pre:push": "yarn test:types && yarn test"
+    "pre:push": "yarn test:types"
   },
   "dependencies": {
     "@headlessui/react": "^1.4.1",

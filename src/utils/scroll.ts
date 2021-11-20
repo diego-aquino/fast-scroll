@@ -1,3 +1,5 @@
+const SCROLLING_OVERFLOW_VALUES = ['scroll', 'auto'];
+
 abstract class AbstractScrollAxis {
   abstract scrollBy(element: Element, delta: number): void;
   abstract isScrollable(element: Element): boolean;
@@ -25,9 +27,15 @@ class HorizontalScrollAxis extends AbstractScrollAxis {
   }
 
   isScrollable(element: Element): boolean {
-    const hasHorizontalScrollEnabled = ['scroll', 'auto'].includes(
-      window.getComputedStyle(element).overflowX,
-    );
+    const rootElement = document.querySelector(':root');
+    const computedOverflowX = window.getComputedStyle(element).overflowX;
+
+    if (element === rootElement && computedOverflowX === 'visible') {
+      return true;
+    }
+
+    const hasHorizontalScrollEnabled =
+      SCROLLING_OVERFLOW_VALUES.includes(computedOverflowX);
     const hasHorizontalContentOverflow =
       element.scrollWidth > element.clientWidth;
 
@@ -41,9 +49,15 @@ class VerticalScrollAxis extends AbstractScrollAxis {
   }
 
   isScrollable(element: Element): boolean {
-    const hasVerticalScrollEnabled = ['scroll', 'auto'].includes(
-      window.getComputedStyle(element).overflowY,
-    );
+    const rootElement = document.querySelector(':root');
+    const computedOverflowY = window.getComputedStyle(element).overflowY;
+
+    if (element === rootElement && computedOverflowY === 'visible') {
+      return true;
+    }
+
+    const hasVerticalScrollEnabled =
+      SCROLLING_OVERFLOW_VALUES.includes(computedOverflowY);
     const hasVerticalContentOverflow =
       element.scrollHeight > element.clientHeight;
 
@@ -61,7 +75,7 @@ export function hasSmoothScrollEnabled(element: Element): boolean {
 }
 
 export function enableSmoothScroll(element: HTMLElement): void {
-  element.style.scrollBehavior = 'scroll';
+  element.style.scrollBehavior = 'smooth';
 }
 
 export function disableSmoothScroll(element: HTMLElement): void {

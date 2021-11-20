@@ -41,13 +41,22 @@ function applyScrollSpeedMultiplier(
   ) as HTMLElement;
   const elementHasSmoothScroll = hasSmoothScrollEnabled(elementToScroll);
 
+  const rootElement = document.querySelector(':root') as HTMLElement;
+  const rootElementHasSmoothScroll = hasSmoothScrollEnabled(rootElement);
+
   if (elementHasSmoothScroll) {
     disableSmoothScroll(elementToScroll);
+  }
+  if (rootElementHasSmoothScroll) {
+    disableSmoothScroll(rootElement);
   }
 
   selectedScrollAxis.scrollBy(elementToScroll, multipliedScrollDelta);
 
   if (elementHasSmoothScroll) {
     enableSmoothScroll(elementToScroll);
+  }
+  if (rootElementHasSmoothScroll) {
+    enableSmoothScroll(rootElement);
   }
 }

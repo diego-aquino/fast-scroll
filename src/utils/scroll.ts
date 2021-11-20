@@ -75,7 +75,7 @@ export function hasSmoothScrollEnabled(element: Element): boolean {
 }
 
 export function enableSmoothScroll(element: HTMLElement): void {
-  element.style.scrollBehavior = 'scroll';
+  element.style.scrollBehavior = 'smooth';
 }
 
 export function disableSmoothScroll(element: HTMLElement): void {

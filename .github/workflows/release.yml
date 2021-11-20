@@ -5,9 +5,9 @@ on:
     branches: [main]
 
 jobs:
-  release:
+  github-release:
     runs-on: ubuntu-latest
-    environment: Production
+    environment: GitHub Release
 
     steps:
       - name: Checkout code

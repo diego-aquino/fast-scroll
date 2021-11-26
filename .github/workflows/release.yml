@@ -34,7 +34,7 @@ jobs:
       - name: Save necessary data to env
         run: |
           echo 'RELEASE_VERSION='$(node ./dev/release/getVersion.js) >> $GITHUB_ENV
-          git fetch
+          git fetch --tags
           echo 'EXISTING_RELEASE_VERSION='$(git tag -l $RELEASE_VERSION) >> $GITHUB_ENV
 
       - name: Generate build

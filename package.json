@@ -10,7 +10,7 @@
   "scripts": {
     "prepare": "husky install",
     "dev": "yarn build:clean && webpack serve",
-    "build": "yarn build:clean && yarn build:check-types && yarn build:run && yarn build:compress",
+    "build": "yarn build:clean & yarn build:check-types && yarn build:run && yarn build:compress",
     "build:clean": "rm -rf build/*",
     "build:check-types": "tsc  --pretty --noEmit",
     "build:run": "cross-env NODE_ENV=production webpack",
@@ -23,7 +23,7 @@
     "test": "jest",
     "test:types": "tsc  --pretty --noEmit",
     "test:coverage": "jest --coverage",
-    "pre:commit": "yarn style:format && yarn lint",
+    "pre:commit": "yarn style:format & yarn lint",
     "pre:push": "yarn test:types"
   },
   "dependencies": {

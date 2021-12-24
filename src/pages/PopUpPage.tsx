@@ -87,6 +87,7 @@ const PopUpPage: FC = () => {
         onChange={handleSpeedMultiplierChange}
         onFocus={handleSpeedMultiplierFocus}
         onIncrementMultiplier={incrementScrollSpeedMultiplier}
+        className="w-48"
       />
     </div>
   );

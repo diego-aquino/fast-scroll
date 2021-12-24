@@ -47,6 +47,10 @@ module.exports = {
       writeToDisk: true,
     },
   },
+  cache: {
+    type: 'filesystem',
+    cacheDirectory: path.resolve(__dirname, '.webpack', 'cache'),
+  },
 
   plugins: [
     new HTMLWebpackPlugin({

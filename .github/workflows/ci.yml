@@ -7,6 +7,7 @@ on:
 
 jobs:
   ci:
+    name: CI
     runs-on: ubuntu-latest
 
     steps:
@@ -16,31 +17,29 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: 14
+          node-version: 16
 
       - name: Cache dependencies
         uses: actions/cache@v2
         env:
-          CACHE_NAME: yarn-cache
+          CACHE_VERSION: v1
         with:
           path: |
             ~/.cache/yarn
             node_modules
-          key: ${{ runner.os }}-yarn-${{ env.CACHE_NAME }}-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-dependencies-${{ env.CACHE_VERSION }}-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
-            ${{ runner.os }}-yarn-
+            ${{ runner.os }}-dependencies-${{ env.CACHE_VERSION }}-
+            ${{ runner.os }}-dependencies-
 
       - name: Install dependencies
         run: yarn
 
-      - name: Check code formatting style
-        run: yarn style:check
-
-      - name: Lint code
-        run: yarn lint
-
-      - name: Check types
-        run: yarn test:types
+      - name: Check formatting style, lint code and test types
+        run: |
+          yarn turbo run style:check
+          yarn turbo run lint
+          yarn turbo run test:types
 
       - name: Run tests
-        run: yarn test
+        run: yarn turbo run test

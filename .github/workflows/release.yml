@@ -1,11 +1,16 @@
 name: Release
 
 on:
-  push:
-    branches: [main]
+  workflow_dispatch:
+    inputs:
+      mode:
+        type: choice
+        options: [patch, minor, major]
+        required: true
 
 jobs:
   github-release:
+    name: GitHub release
     runs-on: ubuntu-latest
     environment: GitHub Release
 
@@ -16,24 +21,36 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: 14
+          node-version: 16
 
       - name: Cache dependencies
         uses: actions/cache@v2
         env:
-          CACHE_NAME: yarn-cache
+          CACHE_VERSION: v1
         with:
-          path: ~/.cache/yarn
-          key: ${{ runner.os }}-yarn-${{ env.CACHE_NAME }}-${{ hashFiles('**/yarn.lock') }}
+          path: |
+            ~/.cache/yarn
+            node_modules
+          key: ${{ runner.os }}-dependencies-${{ env.CACHE_VERSION }}-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
-            ${{ runner.os }}-yarn-
+            ${{ runner.os }}-dependencies-${{ env.CACHE_VERSION }}-
+            ${{ runner.os }}-dependencies-
 
       - name: Install dependencies
         run: yarn
 
-      - name: Save necessary data to env
+      - name: Upgrade version and save necessary data to env
         run: |
+          PREVIOUS_VERSION=$(node ./dev/release/getVersion.js)
+          yarn release:upgrade ${{ github.event.inputs.mode }}
           RELEASE_VERSION=$(node ./dev/release/getVersion.js)
+
+          git config --global user.email "diegocruzdeaquino@gmail.com"
+          git config --global user.name "Diego Aquino"
+
+          git add .
+          git commit -m "chore: upgrade version from v$PREVIOUS_VERSION to v$RELEASE_VERSION"
+          git push
 
           git fetch --tags
           EXISTING_RELEASE_VERSION=$(git tag -l v$RELEASE_VERSION)
@@ -43,7 +60,7 @@ jobs:
 
       - name: Generate build
         if: ${{ env.EXISTING_RELEASE_VERSION == '' }}
-        run: yarn build
+        run: yarn turbo run build
 
       - name: Create GitHub release
         if: ${{ env.EXISTING_RELEASE_VERSION == '' }}

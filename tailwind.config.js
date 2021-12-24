@@ -1,14 +1,5 @@
 module.exports = {
-  purge: {
-    enabled: true,
-    content: ['./src/**/*.tsx'],
-    options: {
-      keyframes: true,
-      fontFace: true,
-      variables: true,
-    },
-  },
-  darkMode: false, // or 'media' or 'class'
+  content: ['./src/**/*.{js,jsx,ts,tsx}'],
   theme: {
     extend: {
       fontFamily: {
@@ -16,6 +7,7 @@ module.exports = {
         serif: ['"Open Sans"', 'system-ui', 'sans-serif'],
       },
       colors: {
+        current: 'currentColor',
         orange: {
           50: '#FFE8D9',
           100: '#FFD0B5',
@@ -89,14 +81,6 @@ module.exports = {
           900: '#05400A',
         },
       },
-    },
-  },
-  variants: {
-    extend: {
-      backgroundColor: ['active'],
-      boxShadow: ['focus-visible'],
-      textColor: ['active'],
-      textDecoration: ['active', 'focus-visible'],
     },
   },
   plugins: [],

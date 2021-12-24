@@ -17,7 +17,7 @@
     "build:compress": "zx ./dev/build/compress.js",
     "release:version": "zx ./dev/release/getVersion.js",
     "release:upgrade": "zx ./dev/release/upgradeVersion.js",
-    "lint": "eslint ./src ./tests ./dev --ext 'js,jsx,ts,tsx'",
+    "lint": "eslint ./src ./tests ./dev --ext 'js,jsx,ts,tsx' --cache",
     "style:check": "prettier --check .",
     "style:format": "prettier --write .",
     "test": "jest",

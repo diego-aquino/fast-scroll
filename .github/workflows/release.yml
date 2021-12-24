@@ -42,20 +42,11 @@ jobs:
       - name: Upgrade version and save necessary data to env
         run: |
           PREVIOUS_VERSION=$(node ./dev/release/getVersion.js)
-
           yarn release:upgrade ${{ github.event.inputs.mode }}
-
           RELEASE_VERSION=$(node ./dev/release/getVersion.js)
 
-          git remote set-url origin git@github.com-fast-scroll:diego-aquino/fast-scroll.git
-          mkdir -p ~/.ssh
-          echo "${{ secrets.RELEASE_DEPLOY_KEY }}" > ~/.ssh/github-deploy_key
-          chmod 600 ~/.ssh/github-deploy_key
-          echo "
-          Host github.com-fast-scroll
-            Hostname github.com
-            IdentityFile=~/.ssh/github-deploy_key
-          " > ~/.ssh/config
+          git config --global user.email "diegocruzdeaquino@gmail.com"
+          git config --global user.name "Diego Aquino"
 
           git add .
           git commit -m "chore: upgrade version from v$PREVIOUS_VERSION to v$RELEASE_VERSION"

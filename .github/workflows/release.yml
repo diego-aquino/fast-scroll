@@ -1,8 +1,12 @@
 name: Release
 
 on:
-  push:
-    branches: [main]
+  workflow_dispatch:
+    inputs:
+      mode:
+        type: choice
+        options: [patch, minor, major]
+        required: true
 
 jobs:
   github-release:
@@ -35,9 +39,25 @@ jobs:
       - name: Install dependencies
         run: yarn
 
-      - name: Save necessary data to env
+      - name: Upgrade version and save necessary data to env
         run: |
+          PREVIOUS_VERSION=$(node ./dev/release/getVersion.js)
+
+          yarn release:upgrade ${{ github.event.inputs.mode }}
+
           RELEASE_VERSION=$(node ./dev/release/getVersion.js)
+
+          git remote set-url origin git@github.com-fast-scroll:diego-aquino/fast-scroll.git
+          echo "${{ secrets.RELEASE_DEPLOY_KEY }}" > ~/.ssh/github-deploy_key
+          echo "
+          Host github.com-fast-scroll
+            Hostname github.com
+            IdentityFile=~/.ssh/github-deploy_key
+          " > ~/.ssh/config
+
+          git add .
+          git commit -m "chore: upgrade version from v$PREVIOUS_VERSION to v$RELEASE_VERSION"
+          git push
 
           git fetch --tags
           EXISTING_RELEASE_VERSION=$(git tag -l v$RELEASE_VERSION)

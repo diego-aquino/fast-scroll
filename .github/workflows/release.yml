@@ -48,7 +48,9 @@ jobs:
           RELEASE_VERSION=$(node ./dev/release/getVersion.js)
 
           git remote set-url origin git@github.com-fast-scroll:diego-aquino/fast-scroll.git
+          mkdir -p ~/.ssh
           echo "${{ secrets.RELEASE_DEPLOY_KEY }}" > ~/.ssh/github-deploy_key
+          chmod 600 ~/.ssh/github-deploy_key
           echo "
           Host github.com-fast-scroll
             Hostname github.com
@@ -64,6 +66,8 @@ jobs:
 
           echo 'RELEASE_VERSION='$RELEASE_VERSION >> $GITHUB_ENV
           echo 'EXISTING_RELEASE_VERSION='$EXISTING_RELEASE_VERSION >> $GITHUB_ENV
+
+          rm ~/.ssh/github-deploy_key
 
       - name: Generate build
         if: ${{ env.EXISTING_RELEASE_VERSION == '' }}

@@ -6,6 +6,7 @@ on:
 
 jobs:
   github-release:
+    name: GitHub release
     runs-on: ubuntu-latest
     environment: GitHub Release
 

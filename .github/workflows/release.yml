@@ -67,7 +67,7 @@ jobs:
 
       - name: Generate build
         if: ${{ env.EXISTING_RELEASE_VERSION == '' }}
-        run: yarn build
+        run: yarn turbo run build
 
       - name: Create GitHub release
         if: ${{ env.EXISTING_RELEASE_VERSION == '' }}

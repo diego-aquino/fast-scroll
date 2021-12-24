@@ -6,6 +6,7 @@ on:
 
 jobs:
   github-release:
+    name: GitHub release
     runs-on: ubuntu-latest
     environment: GitHub Release
 
@@ -16,17 +17,20 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: 14
+          node-version: 16
 
       - name: Cache dependencies
         uses: actions/cache@v2
         env:
-          CACHE_NAME: yarn-cache
+          CACHE_VERSION: v1
         with:
-          path: ~/.cache/yarn
-          key: ${{ runner.os }}-yarn-${{ env.CACHE_NAME }}-${{ hashFiles('**/yarn.lock') }}
+          path: |
+            ~/.cache/yarn
+            node_modules
+          key: ${{ runner.os }}-dependencies-${{ env.CACHE_VERSION }}-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
-            ${{ runner.os }}-yarn-
+            ${{ runner.os }}-dependencies-${{ env.CACHE_VERSION }}-
+            ${{ runner.os }}-dependencies-
 
       - name: Install dependencies
         run: yarn

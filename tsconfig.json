@@ -24,8 +24,8 @@
     "src/**/*.js*",
     "tests/**/*.ts*",
     "tests/**/*.js*",
-    "dev/**/*.ts*",
-    "dev/**/*.js*",
+    "scripts/**/*.ts*",
+    "scripts/**/*.js*",
     "*.ts*",
     "*.js*"
   ],

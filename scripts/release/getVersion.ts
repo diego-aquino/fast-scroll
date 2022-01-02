@@ -1,6 +1,6 @@
-const filesystem = require('fs-extra');
+import filesystem from 'fs-extra';
 
-const { PACKAGE_JSON_PATH } = require('../config');
+import { PACKAGE_JSON_PATH } from '~scripts/config';
 
 main();
 

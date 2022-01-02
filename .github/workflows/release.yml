@@ -41,9 +41,9 @@ jobs:
 
       - name: Upgrade version and save necessary data to env
         run: |
-          PREVIOUS_VERSION=$(node ./scripts/release/getVersion.js)
+          PREVIOUS_VERSION=$(yarn --silent release:version)
           yarn release:upgrade ${{ github.event.inputs.mode }}
-          RELEASE_VERSION=$(node ./scripts/release/getVersion.js)
+          RELEASE_VERSION=$(yarn --silent release:version)
 
           git config --global user.email "diegocruzdeaquino@gmail.com"
           git config --global user.name "Diego Aquino"

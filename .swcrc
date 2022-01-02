@@ -12,7 +12,10 @@
     },
     "baseUrl": ".",
     "paths": {
-      "~/*": ["src/*"]
+      "~/*": ["src/*"],
+      "~~/*": ["./*"],
+      "~tests/*": ["tests/*"],
+      "~scripts/*": ["scripts/*"]
     }
   },
   "module": {

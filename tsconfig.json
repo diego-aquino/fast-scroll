@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
-    "module": "esnext",
+    "module": "commonjs",
     "moduleResolution": "node",
     "typeRoots": ["node_modules/@types", "src/@types"],
     "allowJs": true,
@@ -14,9 +14,12 @@
     "strict": true,
     "skipLibCheck": true,
     "baseUrl": "./",
+    "resolveJsonModule": true,
     "paths": {
       "~/*": ["src/*"],
-      "~tests/*": ["tests/*"]
+      "~~/*": ["./*"],
+      "~tests/*": ["tests/*"],
+      "~scripts/*": ["scripts/*"]
     }
   },
   "include": [

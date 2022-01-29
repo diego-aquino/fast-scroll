@@ -6,7 +6,12 @@ import {
   scrollAxis,
 } from '~/utils/scroll';
 
-attachWheelListener();
+main();
+
+async function main() {
+  await config.loadFromStorage();
+  attachWheelListener();
+}
 
 function attachWheelListener() {
   window.addEventListener('wheel', handleWheelEvent, { passive: false });

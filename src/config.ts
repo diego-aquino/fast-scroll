@@ -1,9 +1,9 @@
-enum StorageKeys { // eslint-disable-line no-shadow
+export enum StorageKeys { // eslint-disable-line no-shadow
   scrollSpeedMultiplier = 'scrollSpeedMultiplier',
 }
 
-class Config {
-  private static DEFAULT_SCROLL_SPEED_MULTIPLIER = 3;
+export class Config {
+  static DEFAULT_SCROLL_SPEED_MULTIPLIER = 3;
 
   private _scrollSpeedMultiplier = Config.DEFAULT_SCROLL_SPEED_MULTIPLIER;
   hasBeenLoaded = false;

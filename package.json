@@ -23,8 +23,8 @@
     "style:check": "prettier --check .",
     "style:format": "prettier --write .",
     "test": "jest",
-    "test:types": "tsc  --pretty --noEmit",
     "test:coverage": "jest --coverage",
+    "types:check": "tsc  --pretty --noEmit",
     "prepare": "husky install"
   },
   "turbo": {

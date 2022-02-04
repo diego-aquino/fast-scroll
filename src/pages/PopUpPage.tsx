@@ -73,7 +73,7 @@ const PopUpPage: FC = () => {
 
   useEffect(() => {
     const speedMultiplierInput = speedMultiplierInputRef.current;
-    if (!speedMultiplierInput) return;
+    if (!speedMultiplierInput || !config.hasBeenLoaded) return;
 
     speedMultiplierInput.value = `${config.scrollSpeedMultiplier()}x`;
   }, [config.hasBeenLoaded, config]);

@@ -1,26 +1,33 @@
-const filesystem = require('fs-extra');
+import filesystem from 'fs-extra';
 
-const { MANIFEST_JSON_PATH, PACKAGE_JSON_PATH } = require('../config');
-const { prettifyFiles } = require('../utils/format');
+import { MANIFEST_JSON_PATH, PACKAGE_JSON_PATH } from '../config';
+import { prettifyFiles } from '../utils/format';
 
+type UpgradeMode = 'patch' | 'minor' | 'major';
 const UPGRADE_MODES = new Set(['patch', 'minor', 'major']);
 
 main();
 
-async function main() {
+async function main(): Promise<void> {
   const { upgradeMode } = processCLIArguments();
   await upgradeVersionAcrossFiles(upgradeMode);
 }
 
-function processCLIArguments() {
-  const [upgradeMode] = process.argv.slice(3);
+function processCLIArguments(): { upgradeMode: UpgradeMode } {
+  const [upgradeMode] = process.argv.slice(2);
 
   if (!upgradeMode) {
     console.error('[error] No upgrade mode provided. Abort.');
     process.exit(1);
   }
 
-  if (!UPGRADE_MODES.has(upgradeMode)) {
+  function isValidUpgradeMode(
+    modeCandidate: string,
+  ): modeCandidate is UpgradeMode {
+    return UPGRADE_MODES.has(modeCandidate);
+  }
+
+  if (!isValidUpgradeMode(upgradeMode)) {
     console.error(
       `[error] Upgrade mode '${upgradeMode}' not recognized. Abort.`,
     );
@@ -30,7 +37,9 @@ function processCLIArguments() {
   return { upgradeMode };
 }
 
-async function upgradeVersionAcrossFiles(upgradeMode) {
+async function upgradeVersionAcrossFiles(
+  upgradeMode: UpgradeMode,
+): Promise<void> {
   const [manifestJSON, packageJSON] = await Promise.all([
     filesystem.readJSON(MANIFEST_JSON_PATH),
     filesystem.readJSON(PACKAGE_JSON_PATH),
@@ -48,7 +57,10 @@ async function upgradeVersionAcrossFiles(upgradeMode) {
   await prettifyFiles([MANIFEST_JSON_PATH, PACKAGE_JSON_PATH]);
 }
 
-function getUpgradedVersion(currentVersion, upgradeMode) {
+function getUpgradedVersion(
+  currentVersion: string,
+  upgradeMode: UpgradeMode,
+): string {
   const parsedVersion = parseVersionComponents(currentVersion);
   const parsedUpgradedVersion = upgradeVersionComponents(
     parsedVersion,
@@ -58,33 +70,42 @@ function getUpgradedVersion(currentVersion, upgradeMode) {
   return newVersion;
 }
 
-function parseVersionComponents(version) {
+interface ParsedVersion {
+  patch: number;
+  minor: number;
+  major: number;
+}
+
+function parseVersionComponents(version: string): ParsedVersion {
   const [majorVersion, minorVersion, patchVersion] = version.split('.');
   const parsedVersion = {
-    major: majorVersion,
-    minor: minorVersion,
-    patch: patchVersion,
+    major: Number(majorVersion),
+    minor: Number(minorVersion),
+    patch: Number(patchVersion),
   };
   return parsedVersion;
 }
 
-function upgradeVersionComponents(parsedVersion, upgradeMode) {
+function upgradeVersionComponents(
+  parsedVersion: ParsedVersion,
+  upgradeMode: UpgradeMode,
+): ParsedVersion {
   switch (upgradeMode) {
     case 'patch':
       return {
         major: parsedVersion.major,
         minor: parsedVersion.minor,
-        patch: Number(parsedVersion.patch) + 1,
+        patch: parsedVersion.patch + 1,
       };
     case 'minor':
       return {
         major: parsedVersion.major,
-        minor: Number(parsedVersion.minor) + 1,
+        minor: parsedVersion.minor + 1,
         patch: 0,
       };
     case 'major':
       return {
-        major: Number(parsedVersion.major) + 1,
+        major: parsedVersion.major + 1,
         minor: 0,
         patch: 0,
       };
@@ -93,6 +114,6 @@ function upgradeVersionComponents(parsedVersion, upgradeMode) {
   }
 }
 
-function formatVersionComponents(parsedVersion) {
+function formatVersionComponents(parsedVersion: ParsedVersion): string {
   return `${parsedVersion.major}.${parsedVersion.minor}.${parsedVersion.patch}`;
 }

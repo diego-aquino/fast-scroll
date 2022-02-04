@@ -6,7 +6,12 @@ import {
   scrollAxis,
 } from '~/utils/scroll';
 
-attachWheelListener();
+main();
+
+export async function main() {
+  await config.loadFromStorage();
+  attachWheelListener();
+}
 
 function attachWheelListener() {
   window.addEventListener('wheel', handleWheelEvent, { passive: false });
@@ -16,7 +21,7 @@ function handleWheelEvent(wheelEvent: WheelEvent) {
   if (wheelEvent.defaultPrevented) return;
   if (!wheelEvent.altKey || wheelEvent.ctrlKey) return;
 
-  applyScrollSpeedMultiplier(wheelEvent, config.scrollSpeedMultiplier);
+  applyScrollSpeedMultiplier(wheelEvent, config.scrollSpeedMultiplier());
 }
 
 function applyScrollSpeedMultiplier(

@@ -1,8 +1,8 @@
-const archiver = require('archiver');
-const filesystem = require('fs-extra');
-const path = require('path');
+import archiver from 'archiver';
+import filesystem from 'fs-extra';
+import path from 'path';
 
-const { BUILD_DIR, COMPRESSED_BUILD_PATH } = require('../config');
+import { BUILD_DIR, COMPRESSED_BUILD_PATH } from '~scripts/config';
 
 const compressedOutput = filesystem.createWriteStream(COMPRESSED_BUILD_PATH);
 const archive = archiver('zip');

@@ -41,12 +41,12 @@ jobs:
 
       - name: Upgrade version and save necessary data to env
         run: |
-          PREVIOUS_VERSION=$(node ./dev/release/getVersion.js)
+          PREVIOUS_VERSION=$(yarn --silent release:version)
           yarn release:upgrade ${{ github.event.inputs.mode }}
-          RELEASE_VERSION=$(node ./dev/release/getVersion.js)
+          RELEASE_VERSION=$(yarn --silent release:version)
 
-          git config --global user.email "diegocruzdeaquino@gmail.com"
-          git config --global user.name "Diego Aquino"
+          git config --global user.email "${{ secrets.VERSION_UPGRADE_EMAIL }}"
+          git config --global user.name "${{ secrets.VERSION_UPGRADE_NAME }}"
 
           git add .
           git commit -m "chore: upgrade version from v$PREVIOUS_VERSION to v$RELEASE_VERSION"
@@ -60,7 +60,7 @@ jobs:
 
       - name: Generate build
         if: ${{ env.EXISTING_RELEASE_VERSION == '' }}
-        run: yarn turbo run build
+        run: yarn build
 
       - name: Create GitHub release
         if: ${{ env.EXISTING_RELEASE_VERSION == '' }}

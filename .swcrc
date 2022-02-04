@@ -8,6 +8,9 @@
     "transform": {
       "react": {
         "runtime": "automatic"
+      },
+      "hidden": {
+        "jest": true
       }
     },
     "baseUrl": ".",

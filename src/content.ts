@@ -8,7 +8,7 @@ import {
 
 main();
 
-async function main() {
+export async function main() {
   await config.loadFromStorage();
   attachWheelListener();
 }

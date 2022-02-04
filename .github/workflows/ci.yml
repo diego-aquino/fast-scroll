@@ -35,11 +35,12 @@ jobs:
       - name: Install dependencies
         run: yarn
 
-      - name: Check formatting style, lint code and test types
+      - name: Check formatting style, lint code and check types
         run: |
-          yarn turbo run style:check
-          yarn turbo run lint
-          yarn turbo run test:types
+          yarn concurrently \
+            'yarn style:check .' \
+            'yarn lint .' \
+            'yarn types:check'
 
       - name: Run tests
-        run: yarn turbo run test
+        run: yarn test

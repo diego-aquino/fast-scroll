@@ -7,6 +7,10 @@ export default {
   coverageDirectory: 'coverage',
   coverageProvider: 'v8',
   coverageReporters: ['json', 'lcov'],
+  coveragePathIgnorePatterns: [
+    '^<rootDir>/node_modules',
+    '^<rootDir>/src/types/.+\\.ts$',
+  ],
   collectCoverageFrom: [
     '<rootDir>/src/**/*.{js,jsx,ts,tsx}',
     '<rootDir>/dev/**/*.{js,jsx,ts,tsx}',

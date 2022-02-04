@@ -21,7 +21,7 @@ function handleWheelEvent(wheelEvent: WheelEvent) {
   if (wheelEvent.defaultPrevented) return;
   if (!wheelEvent.altKey || wheelEvent.ctrlKey) return;
 
-  applyScrollSpeedMultiplier(wheelEvent, config.scrollSpeedMultiplier);
+  applyScrollSpeedMultiplier(wheelEvent, config.scrollSpeedMultiplier());
 }
 
 function applyScrollSpeedMultiplier(

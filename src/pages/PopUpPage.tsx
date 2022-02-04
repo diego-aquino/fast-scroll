@@ -75,8 +75,8 @@ const PopUpPage: FC = () => {
     const speedMultiplierInput = speedMultiplierInputRef.current;
     if (!speedMultiplierInput) return;
 
-    speedMultiplierInput.value = `${config.scrollSpeedMultiplier}x`;
-  }, [config.hasBeenLoaded, config.scrollSpeedMultiplier]);
+    speedMultiplierInput.value = `${config.scrollSpeedMultiplier()}x`;
+  }, [config.hasBeenLoaded, config]);
 
   return (
     <div className="p-4 space-y-1 bg-gray-50">

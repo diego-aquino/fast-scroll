@@ -11,23 +11,19 @@ class Config {
   constructor() {
     browser.storage.onChanged.addListener((changes) => {
       Object.entries(changes).forEach(([key, { newValue }]) => {
-        if (key in this) {
-          this[key as keyof this] = newValue;
+        if (key === StorageKeys.scrollSpeedMultiplier) {
+          this.setScrollSpeedMultiplier(newValue);
         }
       });
     });
   }
 
-  get scrollSpeedMultiplier(): number {
+  scrollSpeedMultiplier(): number {
     return this._scrollSpeedMultiplier;
   }
 
-  private set scrollSpeedMultiplier(multiplier: number) {
-    this._scrollSpeedMultiplier = multiplier;
-  }
-
   async setScrollSpeedMultiplier(multiplier: number) {
-    this.scrollSpeedMultiplier = multiplier;
+    this._scrollSpeedMultiplier = multiplier;
 
     await browser.storage.sync.set({
       [StorageKeys.scrollSpeedMultiplier]: multiplier,
@@ -38,10 +34,9 @@ class Config {
     const { [StorageKeys.scrollSpeedMultiplier]: scrollSpeedMultiplier } =
       await browser.storage.sync.get([StorageKeys.scrollSpeedMultiplier]);
 
-    Object.assign(this, {
-      scrollSpeedMultiplier:
-        scrollSpeedMultiplier ?? this.scrollSpeedMultiplier,
-    });
+    if (scrollSpeedMultiplier !== undefined) {
+      this.setScrollSpeedMultiplier(scrollSpeedMultiplier);
+    }
 
     this.hasBeenLoaded = true;
   }

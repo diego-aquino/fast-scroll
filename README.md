@@ -6,15 +6,15 @@
 
 <p align="center">Navigate faster by increasing your browser's scrolling speed</p>
 
+<p align="center">
+  <img src="docs/assets/demonstration-hero.png">
+</p>
+
 ---
 
 ## About
 
 Fast Scroll is a simple extension to increase your Google Chrome's scrolling speed while holding the `Alt` key.
-
-<p align="center">
-  <img src="docs/assets/demonstration-hero.png" width="65%">
-</p>
 
 ## Installation
 

@@ -16,6 +16,14 @@
 
 Fast Scroll is a simple extension to increase your Google Chrome's scrolling speed while holding the `Alt` key.
 
+★ Easy to use
+
+To activate the increased speed, hold the Alt key while scrolling.
+
+★ Customization
+
+You can change your preferred speed any time by clicking the extension icon. Your preferences are saved and synchronized to your Chrome profile.
+
 ## Installation
 
 Fast Scroll is available at the [Chrome Web Store](https://chrome.google.com/webstore/detail/fast-scroll/dkdnncjokeklapahlhbgfnnakjjaogmb).

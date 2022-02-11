@@ -4,23 +4,33 @@
   <h1 align="center">Fast Scroll</h1>
 </p>
 
-<p align="center">Navigate faster by increasing your browser's scroll speed</p>
+<p align="center">Navigate faster by increasing your browser's scrolling speed</p>
+
+<p align="center">
+  <img src="docs/assets/demonstration-hero.png">
+</p>
 
 ---
 
 ## About
 
-Fast Scroll is a simple extension to increase your Google Chrome's scroll speed while holding the `Alt` key.
+Fast Scroll is a simple extension to increase your Google Chrome's scrolling speed while holding the `Alt` key.
 
-<p align="center">
-  <img src="docs/assets/demonstration-hero.png" width="65%">
-</p>
+★ Easy to use
+
+To activate the increased speed, hold the Alt key while scrolling.
+
+★ Customization
+
+You can change your preferred speed any time by clicking the extension icon. Your preferences are saved and synchronized to your Chrome profile.
 
 ## Installation
 
-Fast Scroll is not yet published to the [Chrome Web Store](https://chrome.google.com/webstore), so you can only install it manually, as an unpacked extension, for now.
+Fast Scroll is available at the [Chrome Web Store](https://chrome.google.com/webstore/detail/fast-scroll/dkdnncjokeklapahlhbgfnnakjjaogmb).
 
 ### Manual installation
+
+For most users, installing through Chrome Web Store is recommended. However, you can follow these steps if you want a manual installation:
 
 1. Download the latest stable release of Fast Scroll from the [Releases page](https://github.com/diego-aquino/fast-scroll/releases). The name of zipped extension file follows the example `fast-scroll-v0-3-2.zip`.
 2. Extract the downloaded zip file. To ensure the extension is loaded properly, the result should be a folder containing a `manifest.json` in its root, among other necessary files and folders.

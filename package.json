@@ -1,7 +1,7 @@
 {
   "name": "fast-scroll",
-  "version": "0.3.6",
-  "description": "Navigate faster by increasing your browser's scroll speed",
+  "version": "1.0.0",
+  "description": "Navigate faster by increasing your browser's scrolling speed",
   "main": "index.js",
   "repository": "git@github.com:diego-aquino/fast-scroll.git",
   "author": "Diego Aquino <diegocruzdeaquino@gmail.com>",
@@ -74,7 +74,7 @@
     "jest": "^27.3.1",
     "jest-watch-typeahead": "^1.0.0",
     "lint-staged": "^12.3.3",
-    "node-sass": "^6.0.1",
+    "node-sass": "^7.0.0",
     "postcss": "^8.4.5",
     "postcss-focus-visible": "^6.0.1",
     "postcss-loader": "^6.2.0",

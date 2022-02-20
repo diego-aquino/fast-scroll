@@ -17,14 +17,16 @@ describe('Config', () => {
   });
 
   it('should support to be loaded from storage', async () => {
-    const preferencesSaveOnStorage = {
-      scrollSpeedMultiplier: 5,
+    const preferencesSaveOnStorage: { [StorageKey in StorageKeys]: unknown } = {
+      SCROLL_SPEED_MULTIPLIER: 5,
     };
 
     const mockStorageSyncGet = jest.fn();
     mockStorageSyncGet.mockImplementation((keys: string[]) => ({
-      scrollSpeedMultiplier: keys.includes(StorageKeys.scrollSpeedMultiplier)
-        ? preferencesSaveOnStorage.scrollSpeedMultiplier
+      [StorageKeys.SCROLL_SPEED_MULTIPLIER]: keys.includes(
+        StorageKeys.SCROLL_SPEED_MULTIPLIER,
+      )
+        ? preferencesSaveOnStorage.SCROLL_SPEED_MULTIPLIER
         : undefined,
     }));
     browser.storage.sync.get = mockStorageSyncGet;
@@ -33,7 +35,7 @@ describe('Config', () => {
 
     expect(config.hasBeenLoaded).toBe(true);
     expect(config.scrollSpeedMultiplier()).toBe(
-      preferencesSaveOnStorage.scrollSpeedMultiplier,
+      preferencesSaveOnStorage.SCROLL_SPEED_MULTIPLIER,
     );
   });
 
@@ -57,7 +59,7 @@ describe('Config', () => {
 
     onChangedListeners.forEach((listener) =>
       listener({
-        [StorageKeys.scrollSpeedMultiplier]: {
+        [StorageKeys.SCROLL_SPEED_MULTIPLIER]: {
           newValue: newScrollSpeedMultiplier,
         },
       }),
@@ -75,7 +77,7 @@ describe('Config', () => {
     config.setScrollSpeedMultiplier(newScrollSpeedMultiplier);
 
     expect(mockStorageSyncSet).toHaveBeenCalledWith({
-      [StorageKeys.scrollSpeedMultiplier]: newScrollSpeedMultiplier,
+      [StorageKeys.SCROLL_SPEED_MULTIPLIER]: newScrollSpeedMultiplier,
     });
   });
 });

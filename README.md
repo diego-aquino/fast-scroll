@@ -4,7 +4,7 @@
   <h1 align="center">Fast Scroll</h1>
 </p>
 
-<p align="center">Navigate faster by increasing your browser's scrolling speed</p>
+<p align="center">Navigate faster by increasing your browser's scrolling speed.</p>
 
 <p align="center">
   <img src="docs/assets/demonstration-hero.png">

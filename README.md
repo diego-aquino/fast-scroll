@@ -28,6 +28,8 @@ You can change your preferred speed any time by clicking the extension icon. You
 
 Fast Scroll is available at the [Chrome Web Store](https://chrome.google.com/webstore/detail/fast-scroll/dkdnncjokeklapahlhbgfnnakjjaogmb).
 
+After installed, you'll be able to use Fast Scroll out of the box! However, make sure to reload any previously active tabs to apply the extension.
+
 ### Manual installation
 
 For most users, installing through Chrome Web Store is recommended. However, you can follow these steps if you want a manual installation:

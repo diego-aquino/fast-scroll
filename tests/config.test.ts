@@ -11,9 +11,7 @@ describe('Config', () => {
 
   it('should not be loaded on initialization', () => {
     expect(config.hasBeenLoaded).toBe(false);
-    expect(config.scrollSpeedMultiplier()).toBe(
-      Config.DEFAULT_SCROLL_SPEED_MULTIPLIER,
-    );
+    expect(config.scrollSpeedMultiplier()).toBe(Config.DEFAULT_SCROLL_SPEED_MULTIPLIER);
   });
 
   it('should support to be loaded from storage', async () => {
@@ -23,9 +21,7 @@ describe('Config', () => {
 
     const mockStorageSyncGet = jest.fn();
     mockStorageSyncGet.mockImplementation((keys: string[]) => ({
-      [StorageKeys.SCROLL_SPEED_MULTIPLIER]: keys.includes(
-        StorageKeys.SCROLL_SPEED_MULTIPLIER,
-      )
+      [StorageKeys.SCROLL_SPEED_MULTIPLIER]: keys.includes(StorageKeys.SCROLL_SPEED_MULTIPLIER)
         ? preferencesSaveOnStorage.SCROLL_SPEED_MULTIPLIER
         : undefined,
     }));
@@ -34,15 +30,11 @@ describe('Config', () => {
     await config.loadFromStorage();
 
     expect(config.hasBeenLoaded).toBe(true);
-    expect(config.scrollSpeedMultiplier()).toBe(
-      preferencesSaveOnStorage.SCROLL_SPEED_MULTIPLIER,
-    );
+    expect(config.scrollSpeedMultiplier()).toBe(preferencesSaveOnStorage.SCROLL_SPEED_MULTIPLIER);
   });
 
   it('should update the internal scroll speed multiplier on storage change', () => {
-    const onChangedListeners: ((
-      changes: Record<string, Storage.StorageChange>,
-    ) => void)[] = [];
+    const onChangedListeners: ((changes: Record<string, Storage.StorageChange>) => void)[] = [];
 
     const mockOnChangedAddListener = jest.fn();
     mockOnChangedAddListener.mockImplementation((listener) => {
@@ -51,9 +43,7 @@ describe('Config', () => {
     browser.storage.onChanged.addListener = mockOnChangedAddListener;
 
     config = new Config();
-    expect(config.scrollSpeedMultiplier()).toBe(
-      Config.DEFAULT_SCROLL_SPEED_MULTIPLIER,
-    );
+    expect(config.scrollSpeedMultiplier()).toBe(Config.DEFAULT_SCROLL_SPEED_MULTIPLIER);
 
     const newScrollSpeedMultiplier = 20;
 

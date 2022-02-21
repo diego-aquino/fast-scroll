@@ -13,22 +13,11 @@ interface Props extends InputProps {
 }
 
 const MultiplierInput: FR<HTMLInputElement, Props> = (
-  {
-    label,
-    multiplierIncrement = DEFAULT_MULTIPLIER_INCREMENT,
-    onIncrementMultiplier,
-    ...rest
-  },
+  { label, multiplierIncrement = DEFAULT_MULTIPLIER_INCREMENT, onIncrementMultiplier, ...rest },
   ref,
 ) => (
   <div className="flex items-end justify-center space-x-1">
-    <Input
-      ref={ref}
-      label={label}
-      spellCheck={false}
-      autoComplete="false"
-      {...rest}
-    />
+    <Input ref={ref} label={label} spellCheck={false} autoComplete="false" {...rest} />
     <Button
       title="Increment"
       aria-label="Increment"

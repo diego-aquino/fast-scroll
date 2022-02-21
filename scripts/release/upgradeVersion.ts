@@ -21,25 +21,19 @@ function processCLIArguments(): { upgradeMode: UpgradeMode } {
     process.exit(1);
   }
 
-  function isValidUpgradeMode(
-    modeCandidate: string,
-  ): modeCandidate is UpgradeMode {
+  function isValidUpgradeMode(modeCandidate: string): modeCandidate is UpgradeMode {
     return UPGRADE_MODES.has(modeCandidate);
   }
 
   if (!isValidUpgradeMode(upgradeMode)) {
-    console.error(
-      `[error] Upgrade mode '${upgradeMode}' not recognized. Abort.`,
-    );
+    console.error(`[error] Upgrade mode '${upgradeMode}' not recognized. Abort.`);
     process.exit(1);
   }
 
   return { upgradeMode };
 }
 
-async function upgradeVersionAcrossFiles(
-  upgradeMode: UpgradeMode,
-): Promise<void> {
+async function upgradeVersionAcrossFiles(upgradeMode: UpgradeMode): Promise<void> {
   const [manifestJSON, packageJSON] = await Promise.all([
     filesystem.readJSON(MANIFEST_JSON_PATH),
     filesystem.readJSON(PACKAGE_JSON_PATH),
@@ -57,15 +51,9 @@ async function upgradeVersionAcrossFiles(
   await prettifyFiles([MANIFEST_JSON_PATH, PACKAGE_JSON_PATH]);
 }
 
-function getUpgradedVersion(
-  currentVersion: string,
-  upgradeMode: UpgradeMode,
-): string {
+function getUpgradedVersion(currentVersion: string, upgradeMode: UpgradeMode): string {
   const parsedVersion = parseVersionComponents(currentVersion);
-  const parsedUpgradedVersion = upgradeVersionComponents(
-    parsedVersion,
-    upgradeMode,
-  );
+  const parsedUpgradedVersion = upgradeVersionComponents(parsedVersion, upgradeMode);
   const newVersion = formatVersionComponents(parsedUpgradedVersion);
   return newVersion;
 }
@@ -86,10 +74,7 @@ function parseVersionComponents(version: string): ParsedVersion {
   return parsedVersion;
 }
 
-function upgradeVersionComponents(
-  parsedVersion: ParsedVersion,
-  upgradeMode: UpgradeMode,
-): ParsedVersion {
+function upgradeVersionComponents(parsedVersion: ParsedVersion, upgradeMode: UpgradeMode): ParsedVersion {
   switch (upgradeMode) {
     case 'patch':
       return {

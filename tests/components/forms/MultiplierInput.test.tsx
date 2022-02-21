@@ -21,10 +21,7 @@ describe('MultiplierInput component', () => {
 
   it('should support having an icon', () => {
     render(
-      <MultiplierInput
-        label="Speed multiplier"
-        renderIcon={(props) => <svg data-testid="input-icon" {...props} />}
-      />,
+      <MultiplierInput label="Speed multiplier" renderIcon={(props) => <svg data-testid="input-icon" {...props} />} />,
     );
 
     expect(screen.getByTestId('input-icon')).toBeInTheDocument();
@@ -46,13 +43,9 @@ describe('MultiplierInput component', () => {
     const decrementButton = screen.getByRole('button', { name: 'Decrement' });
 
     userEvent.click(incrementButton);
-    expect(handleMultiplierIncrementMock).toHaveBeenCalledWith(
-      multiplierIncrement,
-    );
+    expect(handleMultiplierIncrementMock).toHaveBeenCalledWith(multiplierIncrement);
 
     userEvent.click(decrementButton);
-    expect(handleMultiplierIncrementMock).toHaveBeenCalledWith(
-      -multiplierIncrement,
-    );
+    expect(handleMultiplierIncrementMock).toHaveBeenCalledWith(-multiplierIncrement);
   });
 });

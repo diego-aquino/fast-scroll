@@ -22,11 +22,7 @@ describe('Content script', () => {
     await main();
 
     expect(configLoadFromStorageMock).toHaveBeenCalled();
-    expect(windowAddEventListenerMock).toHaveBeenCalledWith(
-      'wheel',
-      expect.any(Function),
-      { passive: false },
-    );
+    expect(windowAddEventListenerMock).toHaveBeenCalledWith('wheel', expect.any(Function), { passive: false });
   });
 
   it('should fast scroll an element vertically, after a wheel event with alt key pressed', () => {
@@ -43,10 +39,7 @@ describe('Content script', () => {
       }),
     );
 
-    expect(scrollByMock).toHaveBeenCalledWith(
-      0,
-      scrollDeltaY * config.scrollSpeedMultiplier(),
-    );
+    expect(scrollByMock).toHaveBeenCalledWith(0, scrollDeltaY * config.scrollSpeedMultiplier());
   });
 
   it('should fast scroll an element horizontally, after a wheel event with alt and shift keys pressed', () => {
@@ -64,10 +57,7 @@ describe('Content script', () => {
       }),
     );
 
-    expect(scrollByMock).toHaveBeenCalledWith(
-      scrollDeltaY * config.scrollSpeedMultiplier(),
-      0,
-    );
+    expect(scrollByMock).toHaveBeenCalledWith(scrollDeltaY * config.scrollSpeedMultiplier(), 0);
   });
 
   it('should not fast scroll an element after a wheel event with no alt key pressed', () => {

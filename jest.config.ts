@@ -7,15 +7,8 @@ export default {
   coverageDirectory: 'coverage',
   coverageProvider: 'v8',
   coverageReporters: ['json', 'lcov'],
-  coveragePathIgnorePatterns: [
-    '^<rootDir>/node_modules',
-    '^<rootDir>/src/types/.+\\.ts$',
-  ],
-  collectCoverageFrom: [
-    '<rootDir>/src/**/*.{js,jsx,ts,tsx}',
-    '<rootDir>/dev/**/*.{js,jsx,ts,tsx}',
-    '!**/*.d.ts',
-  ],
+  coveragePathIgnorePatterns: ['^<rootDir>/node_modules', '^<rootDir>/src/types/.+\\.ts$'],
+  collectCoverageFrom: ['<rootDir>/src/**/*.{js,jsx,ts,tsx}', '<rootDir>/dev/**/*.{js,jsx,ts,tsx}', '!**/*.d.ts'],
 
   moduleDirectories: ['node_modules'],
   moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx', 'json'],
@@ -30,8 +23,5 @@ export default {
   testMatch: ['<rootDir>/tests/**/*.test.[jt]s?(x)'],
   testPathIgnorePatterns: ['node_modules', 'build'],
 
-  watchPlugins: [
-    'jest-watch-typeahead/filename',
-    'jest-watch-typeahead/testname',
-  ],
+  watchPlugins: ['jest-watch-typeahead/filename', 'jest-watch-typeahead/testname'],
 };

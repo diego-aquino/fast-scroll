@@ -25,9 +25,7 @@ const PopUpPage: FC = () => {
 
   const previousSpeedMultiplier = useRef<number>(1);
 
-  async function handleSpeedMultiplierChange(
-    event: ChangeEvent<HTMLInputElement>,
-  ) {
+  async function handleSpeedMultiplierChange(event: ChangeEvent<HTMLInputElement>) {
     const speedMultiplierInput = speedMultiplierInputRef.current;
     if (!speedMultiplierInput) return;
 
@@ -35,17 +33,13 @@ const PopUpPage: FC = () => {
     const selectionEnd = event.target.selectionEnd ?? 1;
 
     const normalizedMultiplier = event.target.value.replace(/[^\d.]/g, '');
-    const atLeastOneInvalidCharacterWasRemoved =
-      normalizedMultiplier.length < event.target.value.length - 1;
+    const atLeastOneInvalidCharacterWasRemoved = normalizedMultiplier.length < event.target.value.length - 1;
 
     const isValid = !Number.isNaN(Number(normalizedMultiplier));
 
     if (!isValid) {
       speedMultiplierInput.value = `${previousSpeedMultiplier.current}x`;
-      speedMultiplierInput.setSelectionRange(
-        selectionStart - 1,
-        selectionEnd - 1,
-      );
+      speedMultiplierInput.setSelectionRange(selectionStart - 1, selectionEnd - 1);
       return;
     }
 
@@ -56,10 +50,7 @@ const PopUpPage: FC = () => {
     previousSpeedMultiplier.current = multiplierAsNumber;
 
     if (atLeastOneInvalidCharacterWasRemoved) {
-      speedMultiplierInput.setSelectionRange(
-        selectionStart - 1,
-        selectionEnd - 1,
-      );
+      speedMultiplierInput.setSelectionRange(selectionStart - 1, selectionEnd - 1);
     } else {
       speedMultiplierInput.setSelectionRange(selectionStart, selectionEnd);
     }

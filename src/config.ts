@@ -31,8 +31,9 @@ export class Config {
   }
 
   async loadFromStorage() {
-    const { [StorageKeys.SCROLL_SPEED_MULTIPLIER]: scrollSpeedMultiplier } =
-      await browser.storage.sync.get([StorageKeys.SCROLL_SPEED_MULTIPLIER]);
+    const storageResult = await browser.storage.sync.get([StorageKeys.SCROLL_SPEED_MULTIPLIER]);
+
+    const { [StorageKeys.SCROLL_SPEED_MULTIPLIER]: scrollSpeedMultiplier } = storageResult;
 
     if (scrollSpeedMultiplier !== undefined) {
       this.setScrollSpeedMultiplier(scrollSpeedMultiplier);

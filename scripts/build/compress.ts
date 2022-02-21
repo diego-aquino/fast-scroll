@@ -11,9 +11,7 @@ archive.directory(BUILD_DIR, false);
 
 compressedOutput.on('close', () => {
   console.log(
-    `[compress] Saved ${path.basename(
-      COMPRESSED_BUILD_PATH,
-    )} to ${BUILD_DIR} (total ${archive.pointer()} bytes)`,
+    `[compress] Saved ${path.basename(COMPRESSED_BUILD_PATH)} to ${BUILD_DIR} (total ${archive.pointer()} bytes)`,
   );
 });
 

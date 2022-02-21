@@ -19,12 +19,7 @@ describe('Input component', () => {
   });
 
   it('should support having an icon', () => {
-    render(
-      <Input
-        label="Username"
-        renderIcon={(props) => <svg data-testid="input-icon" {...props} />}
-      />,
-    );
+    render(<Input label="Username" renderIcon={(props) => <svg data-testid="input-icon" {...props} />} />);
 
     expect(screen.getByTestId('input-icon')).toBeInTheDocument();
   });

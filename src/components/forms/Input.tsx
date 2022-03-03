@@ -1,9 +1,5 @@
 import clsx from 'clsx';
-import {
-  forwardRef,
-  ForwardRefRenderFunction as FR,
-  ReactElement,
-} from 'react';
+import { forwardRef, ForwardRefRenderFunction as FR, ReactElement } from 'react';
 
 import { HTMLInputProps } from '~/types/html';
 
@@ -12,10 +8,7 @@ export interface Props extends HTMLInputProps {
   renderIcon?: (props: { className: string }) => ReactElement;
 }
 
-const Input: FR<HTMLInputElement, Props> = (
-  { label, renderIcon, id, className, ...rest },
-  ref,
-) => (
+const Input: FR<HTMLInputElement, Props> = ({ label, renderIcon, id, className, ...rest }, ref) => (
   <label htmlFor={id} className="relative font-semibold">
     {label}
 

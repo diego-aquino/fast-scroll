@@ -5,9 +5,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const { version } = require('./package.json');
 
 const PUBLIC_DIR = path.resolve(__dirname, 'public');
-const OUTPUT_DIR = path
-  .resolve(__dirname, 'build', `fast-scroll-v${version}`)
-  .replace(/\./g, '-');
+const OUTPUT_DIR = path.resolve(__dirname, 'build', `fast-scroll-v${version}`).replace(/\./g, '-');
 
 const BROWSER_POLYFILL_PATH = path.resolve(
   __dirname,

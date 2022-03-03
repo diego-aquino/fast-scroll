@@ -1,7 +1,7 @@
 {
   "name": "Fast Scroll",
-  "description": "Navigate faster by increasing your browser's scrolling speed",
-  "version": "1.0.0",
+  "description": "Navigate faster by increasing your scrolling speed.",
+  "version": "1.0.1",
   "manifest_version": 3,
   "author": "Diego Aquino <diegocruzdeaquino@gmail.com>",
   "icons": {
@@ -23,10 +23,5 @@
     "default_popup": "popup.html"
   },
   "permissions": ["storage"],
-  "content_scripts": [
-    {
-      "matches": ["<all_urls>"],
-      "js": ["browser-polyfill.min.js", "content.js"]
-    }
-  ]
+  "content_scripts": [{ "matches": ["<all_urls>"], "js": ["browser-polyfill.min.js", "content.js"] }]
 }

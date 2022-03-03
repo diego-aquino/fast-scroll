@@ -23,14 +23,7 @@
     "tsconfigRootDir": "./",
     "project": "./tsconfig.json"
   },
-  "plugins": [
-    "prettier",
-    "@typescript-eslint",
-    "react",
-    "react-hooks",
-    "import",
-    "import-helpers"
-  ],
+  "plugins": ["prettier", "@typescript-eslint", "react", "react-hooks", "import", "import-helpers"],
   "settings": {
     "import/resolver": {
       "typescript": {}
@@ -70,10 +63,7 @@
     ],
 
     "react/jsx-props-no-spreading": 0,
-    "react/jsx-filename-extension": [
-      "warn",
-      { "extensions": [".jsx", ".tsx"] }
-    ],
+    "react/jsx-filename-extension": ["warn", { "extensions": [".jsx", ".tsx"] }],
     "react/prop-types": "off",
     "react/require-default-props": "off",
     "react/no-unused-prop-types": "off",
@@ -84,10 +74,7 @@
     "react/jsx-no-bind": "off",
 
     "@typescript-eslint/indent": "off",
-    "@typescript-eslint/no-unused-vars": [
-      "warn",
-      { "varsIgnorePattern": "^_", "argsIgnorePattern": "^_" }
-    ],
+    "@typescript-eslint/no-unused-vars": ["warn", { "varsIgnorePattern": "^_", "argsIgnorePattern": "^_" }],
     "@typescript-eslint/no-use-before-define": "off",
     "@typescript-eslint/no-explicit-any": "warn"
   }

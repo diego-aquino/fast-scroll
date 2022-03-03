@@ -1,7 +1,7 @@
 {
   "name": "fast-scroll",
-  "version": "1.0.0",
-  "description": "Navigate faster by increasing your browser's scrolling speed",
+  "version": "1.0.1",
+  "description": "Navigate faster by increasing your browser's scrolling speed.",
   "main": "index.js",
   "repository": "git@github.com:diego-aquino/fast-scroll.git",
   "author": "Diego Aquino <diegocruzdeaquino@gmail.com>",
@@ -9,9 +9,8 @@
   "private": true,
   "scripts": {
     "dev": "yarn build:clean && webpack serve",
-    "build": "yarn build:clean & yarn build:check-types && yarn build:run && yarn build:compress",
+    "build": "yarn build:clean & yarn types:check && yarn build:run && yarn build:compress",
     "build:clean": "rm -rf build/*",
-    "build:check-types": "tsc  --pretty --noEmit",
     "build:run": "cross-env NODE_ENV=production webpack",
     "build:compress": "ts-node -r tsconfig-paths/register ./scripts/build/compress.ts",
     "release:version": "ts-node -r tsconfig-paths/register ./scripts/release/getVersion.ts",
@@ -22,7 +21,7 @@
     "style:format": "yarn style --write",
     "test": "jest",
     "test:coverage": "jest --coverage",
-    "types:check": "tsc  --pretty --noEmit",
+    "types:check": "tsc --pretty --noEmit",
     "pre:commit": "lint-staged",
     "pre:push": "concurrently 'yarn types:check' 'yarn lint .' && yarn test",
     "prepare": "husky install"

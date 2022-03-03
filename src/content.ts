@@ -1,10 +1,5 @@
 import config from '~/config';
-import {
-  enableSmoothScroll,
-  disableSmoothScroll,
-  hasSmoothScrollEnabled,
-  scrollAxis,
-} from '~/utils/scroll';
+import { enableSmoothScroll, disableSmoothScroll, hasSmoothScrollEnabled, scrollAxis } from '~/utils/scroll';
 
 main();
 
@@ -24,10 +19,7 @@ function handleWheelEvent(wheelEvent: WheelEvent) {
   applyScrollSpeedMultiplier(wheelEvent, config.scrollSpeedMultiplier());
 }
 
-function applyScrollSpeedMultiplier(
-  wheelEvent: WheelEvent,
-  scrollSpeedMultiplier: number,
-) {
+function applyScrollSpeedMultiplier(wheelEvent: WheelEvent, scrollSpeedMultiplier: number) {
   wheelEvent.preventDefault();
 
   const scrollDelta = wheelEvent.deltaY;
@@ -37,13 +29,9 @@ function applyScrollSpeedMultiplier(
 
   if (!eventTarget) return;
 
-  const selectedScrollAxis = wheelEvent.shiftKey
-    ? scrollAxis.horizontal
-    : scrollAxis.vertical;
+  const selectedScrollAxis = wheelEvent.shiftKey ? scrollAxis.horizontal : scrollAxis.vertical;
 
-  const elementToScroll = selectedScrollAxis.findFirstScrollableElement(
-    eventTarget,
-  ) as HTMLElement;
+  const elementToScroll = selectedScrollAxis.findFirstScrollableElement(eventTarget) as HTMLElement;
   const elementHasSmoothScroll = hasSmoothScrollEnabled(elementToScroll);
 
   const rootElement = document.querySelector(':root') as HTMLElement;

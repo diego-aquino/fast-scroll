@@ -8,13 +8,7 @@ interface Props extends HTMLButtonProps {
   renderIcon?: (props: { className: string }) => ReactNode;
 }
 
-const Button: FC<Props> = ({
-  variant = 'primary',
-  renderIcon,
-  className,
-  children,
-  ...rest
-}) => (
+const Button: FC<Props> = ({ variant = 'primary', renderIcon, className, children, ...rest }) => (
   <button
     className={clsx(
       'rounded-lg transition-all duration-100 flex flex-wrap items-center justify-center font-bold focus-visible:outline-none',

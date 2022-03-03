@@ -4,7 +4,7 @@
   <h1 align="center">Fast Scroll</h1>
 </p>
 
-<p align="center">Navigate faster by increasing your browser's scrolling speed</p>
+<p align="center">Navigate faster by increasing your browser's scrolling speed.</p>
 
 <p align="center">
   <img src="docs/assets/demonstration-hero.png">
@@ -27,6 +27,8 @@ You can change your preferred speed any time by clicking the extension icon. You
 ## Installation
 
 Fast Scroll is available at the [Chrome Web Store](https://chrome.google.com/webstore/detail/fast-scroll/dkdnncjokeklapahlhbgfnnakjjaogmb).
+
+After installed, you'll be able to use Fast Scroll out of the box! However, make sure to reload any previously active tabs to apply the extension.
 
 ### Manual installation
 

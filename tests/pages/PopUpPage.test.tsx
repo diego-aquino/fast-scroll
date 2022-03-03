@@ -11,9 +11,7 @@ describe('PopUpPage component', () => {
 
     render(<PopUpPage />);
 
-    const multiplierInput = await screen.findByLabelText(
-      /scroll speed multiplier/i,
-    );
+    const multiplierInput = await screen.findByLabelText(/scroll speed multiplier/i);
 
     const expectedMultiplier = `${savedMultiplier}x`;
     expect(multiplierInput).toHaveProperty('value', expectedMultiplier);
@@ -25,9 +23,7 @@ describe('PopUpPage component', () => {
 
     render(<PopUpPage />);
 
-    const multiplierInput = await screen.findByLabelText(
-      /scroll speed multiplier/i,
-    );
+    const multiplierInput = await screen.findByLabelText(/scroll speed multiplier/i);
 
     const customMultiplier = 15;
 

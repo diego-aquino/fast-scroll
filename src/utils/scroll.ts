@@ -5,11 +5,7 @@ abstract class AbstractScrollAxis {
   abstract isScrollable(element: Element): boolean;
 
   findFirstScrollableElement(element: Element): Element {
-    if (
-      element === document.body &&
-      document.scrollingElement &&
-      this.isScrollable(document.scrollingElement)
-    ) {
+    if (element === document.body && document.scrollingElement && this.isScrollable(document.scrollingElement)) {
       return document.scrollingElement;
     }
 
@@ -34,10 +30,8 @@ class HorizontalScrollAxis extends AbstractScrollAxis {
       return true;
     }
 
-    const hasHorizontalScrollEnabled =
-      SCROLLING_OVERFLOW_VALUES.includes(computedOverflowX);
-    const hasHorizontalContentOverflow =
-      element.scrollWidth > element.clientWidth;
+    const hasHorizontalScrollEnabled = SCROLLING_OVERFLOW_VALUES.includes(computedOverflowX);
+    const hasHorizontalContentOverflow = element.scrollWidth > element.clientWidth;
 
     return hasHorizontalScrollEnabled && hasHorizontalContentOverflow;
   }
@@ -56,10 +50,8 @@ class VerticalScrollAxis extends AbstractScrollAxis {
       return true;
     }
 
-    const hasVerticalScrollEnabled =
-      SCROLLING_OVERFLOW_VALUES.includes(computedOverflowY);
-    const hasVerticalContentOverflow =
-      element.scrollHeight > element.clientHeight;
+    const hasVerticalScrollEnabled = SCROLLING_OVERFLOW_VALUES.includes(computedOverflowY);
+    const hasVerticalContentOverflow = element.scrollHeight > element.clientHeight;
 
     return hasVerticalScrollEnabled && hasVerticalContentOverflow;
   }

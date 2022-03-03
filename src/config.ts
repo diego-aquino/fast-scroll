@@ -1,5 +1,5 @@
 export enum StorageKeys { // eslint-disable-line no-shadow
-  scrollSpeedMultiplier = 'scrollSpeedMultiplier',
+  SCROLL_SPEED_MULTIPLIER = 'SCROLL_SPEED_MULTIPLIER',
 }
 
 export class Config {
@@ -11,7 +11,7 @@ export class Config {
   constructor() {
     browser.storage.onChanged.addListener((changes) => {
       Object.entries(changes).forEach(([key, { newValue }]) => {
-        if (key === StorageKeys.scrollSpeedMultiplier) {
+        if (key === StorageKeys.SCROLL_SPEED_MULTIPLIER) {
           this.setScrollSpeedMultiplier(newValue);
         }
       });
@@ -26,13 +26,14 @@ export class Config {
     this._scrollSpeedMultiplier = multiplier;
 
     await browser.storage.sync.set({
-      [StorageKeys.scrollSpeedMultiplier]: multiplier,
+      [StorageKeys.SCROLL_SPEED_MULTIPLIER]: multiplier,
     });
   }
 
   async loadFromStorage() {
-    const { [StorageKeys.scrollSpeedMultiplier]: scrollSpeedMultiplier } =
-      await browser.storage.sync.get([StorageKeys.scrollSpeedMultiplier]);
+    const storageResult = await browser.storage.sync.get([StorageKeys.SCROLL_SPEED_MULTIPLIER]);
+
+    const { [StorageKeys.SCROLL_SPEED_MULTIPLIER]: scrollSpeedMultiplier } = storageResult;
 
     if (scrollSpeedMultiplier !== undefined) {
       this.setScrollSpeedMultiplier(scrollSpeedMultiplier);

@@ -71,6 +71,7 @@ module.exports = {
         { from: FOCUS_VISIBLE_POLYFILL_PATH, to: OUTPUT_DIR },
       ],
     }),
+    new ProgressWebpackPlugin(),
   ],
 
   module: {

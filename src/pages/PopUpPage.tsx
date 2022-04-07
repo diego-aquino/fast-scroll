@@ -1,7 +1,7 @@
 import { ChangeEvent, FC, FocusEvent, useEffect, useRef } from 'react';
 
 import MultiplierInput from '~/components/forms/MultiplierInput';
-import { ZapIcon } from '~/components/icons';
+import ZapIcon from '~/components/icons/ZapIcon';
 import useConfig from '~/hooks/useConfig';
 import { selectAllInputValue } from '~/utils/html';
 import { round } from '~/utils/math';

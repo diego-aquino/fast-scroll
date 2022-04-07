@@ -1,7 +1,8 @@
 import { forwardRef, ForwardRefRenderFunction as FR } from 'react';
 
 import Button from '~/components/common/Button';
-import { PlusIcon, MinusIcon } from '~/components/icons';
+import MinusIcon from '~/components/icons/MinusIcon';
+import PlusIcon from '~/components/icons/PlusIcon';
 
 import Input, { Props as InputProps } from './Input';
 

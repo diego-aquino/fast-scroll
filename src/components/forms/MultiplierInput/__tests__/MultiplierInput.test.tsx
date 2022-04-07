@@ -1,7 +1,7 @@
 import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import MultiplierInput from '~/components/forms/MultiplierInput';
+import MultiplierInput from '~/components/forms/MultiplierInput/MultiplierInput';
 
 describe('MultiplierInput component', () => {
   it('should render correctly', () => {

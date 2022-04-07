@@ -1,6 +1,6 @@
 import { Storage } from 'webextension-polyfill';
 
-import { Config, StorageKeys } from '~/config';
+import { Config, StorageKeys } from '~/config/config';
 
 describe('Config', () => {
   let config: Config;

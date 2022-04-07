@@ -1,7 +1,7 @@
 import filesystem from 'fs-extra';
 
-import { MANIFEST_JSON_PATH, PACKAGE_JSON_PATH } from '../config';
-import { prettifyFiles } from '../utils/format';
+import { MANIFEST_JSON_PATH, PACKAGE_JSON_PATH } from '~scripts/config';
+import { prettifyFiles } from '~scripts/utils/format';
 
 type UpgradeMode = 'patch' | 'minor' | 'major';
 const UPGRADE_MODES = new Set(['patch', 'minor', 'major']);

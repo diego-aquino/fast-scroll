@@ -1,9 +1,9 @@
 import { fireEvent } from '@testing-library/dom';
 
-import config from '~/config';
-import { main } from '~/content';
+import config from '~/config/config';
+import { createMockedElementAndAppendToBody } from '~/tests/mocks';
 
-import { createMockedElementAndAppendToBody } from './mocks';
+import { main } from '../content';
 
 describe('Content script', () => {
   beforeEach(async () => {

@@ -1,10 +1,10 @@
 import { ChangeEvent, FC, FocusEvent, useEffect, useRef } from 'react';
 
-import MultiplierInput from '~/components/forms/MultiplierInput';
+import MultiplierInput from '~/components/forms/MultiplierInput/MultiplierInput';
 import ZapIcon from '~/components/icons/ZapIcon';
 import useConfig from '~/hooks/useConfig';
-import { selectAllInputValue } from '~/utils/html';
-import { round } from '~/utils/math';
+import { selectAllInputValue } from '~/utils/html/html';
+import { round } from '~/utils/math/math';
 
 const PopUpPage: FC = () => {
   const { config } = useConfig();

@@ -1,8 +1,11 @@
 const path = require('path');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const ProgressWebpackPlugin = require('progress-webpack-plugin');
 
 const { version } = require('./package.json');
+
+const ENTRY_POINTS_DIR = path.resolve(__dirname, 'src', 'entries');
 
 const PUBLIC_DIR = path.resolve(__dirname, 'public');
 const OUTPUT_DIR = path.resolve(__dirname, 'build', `fast-scroll-v${version}`).replace(/\./g, '-');
@@ -26,8 +29,8 @@ module.exports = {
   mode: process.env.NODE_ENV ?? 'development',
   devtool: false,
   entry: {
-    popup: path.resolve(__dirname, 'src', 'popup.tsx'),
-    content: path.resolve(__dirname, 'src', 'content.ts'),
+    popup: path.resolve(ENTRY_POINTS_DIR, 'popup', 'popup.tsx'),
+    content: path.resolve(ENTRY_POINTS_DIR, 'content', 'content.ts'),
   },
   output: {
     path: OUTPUT_DIR,
@@ -53,7 +56,7 @@ module.exports = {
   plugins: [
     new HTMLWebpackPlugin({
       filename: 'popup.html',
-      template: path.resolve(__dirname, 'public', 'popup.html'),
+      template: path.resolve(__dirname, 'public', 'pages', 'popup.html'),
       inject: 'head',
       chunks: ['popup'],
     }),

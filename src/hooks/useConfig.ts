@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import config from '~/config';
+import config from '~/config/config';
 
 function useConfig() {
   const [_, setConfigHasBeenLoaded] = useState(() => config.hasBeenLoaded);

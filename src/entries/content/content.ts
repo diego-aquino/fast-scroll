@@ -1,5 +1,5 @@
-import config from '~/config';
-import { enableSmoothScroll, disableSmoothScroll, hasSmoothScrollEnabled, scrollAxis } from '~/utils/scroll';
+import config from '~/config/config';
+import { enableSmoothScroll, disableSmoothScroll, hasSmoothScrollEnabled, scrollAxis } from '~/utils/scroll/scroll';
 
 main();
 

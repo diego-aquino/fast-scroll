@@ -17,20 +17,10 @@
     "resolveJsonModule": true,
     "paths": {
       "~/*": ["src/*"],
-      "~~/*": ["./*"],
-      "~tests/*": ["tests/*"],
-      "~scripts/*": ["scripts/*"]
+      "~scripts/*": ["scripts/*"],
+      "~~/*": ["./*"]
     }
   },
-  "include": [
-    "src/**/*.ts*",
-    "src/**/*.js*",
-    "tests/**/*.ts*",
-    "tests/**/*.js*",
-    "scripts/**/*.ts*",
-    "scripts/**/*.js*",
-    "*.ts*",
-    "*.js*"
-  ],
+  "include": ["src/**/*.ts*", "scripts/**/*.ts*"],
   "exclude": ["node_modules", "build", "coverage"]
 }

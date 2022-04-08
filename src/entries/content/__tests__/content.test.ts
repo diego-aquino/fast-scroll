@@ -1,9 +1,9 @@
 import { fireEvent } from '@testing-library/dom';
 
-import config from '~/config';
-import { main } from '~/content';
+import config from '~/config/config';
+import { createMockedElementAndAppendToBody } from '~/tests/mocks';
 
-import { createMockedElementAndAppendToBody } from './mocks';
+import { main } from '../content';
 
 describe('Content script', () => {
   beforeEach(async () => {
@@ -25,9 +25,10 @@ describe('Content script', () => {
     expect(windowAddEventListenerMock).toHaveBeenCalledWith('wheel', expect.any(Function), { passive: false });
   });
 
-  it('should fast scroll an element vertically, after a wheel event with alt key pressed', () => {
+  it('should apply the scroll speed multiplier to an element, after a wheel event with the alt key pressed', () => {
     const { element, scrollByMock } = createMockedElementAndAppendToBody();
 
+    const scrollDeltaX = 50;
     const scrollDeltaY = 100;
 
     fireEvent(
@@ -35,17 +36,20 @@ describe('Content script', () => {
       new WheelEvent('wheel', {
         altKey: true,
         bubbles: true,
+        deltaX: scrollDeltaX,
         deltaY: scrollDeltaY,
       }),
     );
 
+    expect(scrollByMock).toHaveBeenCalledWith(scrollDeltaX * config.scrollSpeedMultiplier(), 0);
     expect(scrollByMock).toHaveBeenCalledWith(0, scrollDeltaY * config.scrollSpeedMultiplier());
   });
 
-  it('should fast scroll an element horizontally, after a wheel event with alt and shift keys pressed', () => {
+  it('should apply the scroll speed multiplier to an element, in the perpendicular axis, after a wheel event with the alt and shift keys pressed', () => {
     const { element, scrollByMock } = createMockedElementAndAppendToBody();
 
-    const scrollDeltaY = 100;
+    const scrollDeltaX = 150;
+    const scrollDeltaY = 75;
 
     fireEvent(
       element,
@@ -53,10 +57,12 @@ describe('Content script', () => {
         altKey: true,
         shiftKey: true,
         bubbles: true,
+        deltaX: scrollDeltaX,
         deltaY: scrollDeltaY,
       }),
     );
 
+    expect(scrollByMock).toHaveBeenCalledWith(0, scrollDeltaX * config.scrollSpeedMultiplier());
     expect(scrollByMock).toHaveBeenCalledWith(scrollDeltaY * config.scrollSpeedMultiplier(), 0);
   });
 

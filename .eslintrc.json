@@ -5,28 +5,29 @@
     "node": true,
     "jest": true
   },
-  "extends": ["airbnb", "prettier", "plugin:@typescript-eslint/recommended"],
   "globals": {
     "JSX": "readonly",
     "NodeJS": "readonly"
   },
+  "extends": ["airbnb", "prettier", "plugin:@typescript-eslint/recommended"],
+  "plugins": ["prettier", "@typescript-eslint", "react", "react-hooks", "import", "import-helpers"],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaFeatures": {
       "ts": true,
-      "tsx": true,
-      "js": true,
-      "jsx": true
+      "tsx": true
     },
     "ecmaVersion": 2020,
-    "sourceType": "module",
-    "tsconfigRootDir": "./",
-    "project": "./tsconfig.json"
+    "sourceType": "module"
   },
-  "plugins": ["prettier", "@typescript-eslint", "react", "react-hooks", "import", "import-helpers"],
   "settings": {
+    "import/parsers": {
+      "@typescript-eslint/parser": [".ts", ".tsx"]
+    },
     "import/resolver": {
-      "typescript": {}
+      "typescript": {
+        "project": "tsconfig.json"
+      }
     }
   },
   "rules": {
@@ -53,16 +54,23 @@
     "lines-between-class-members": "off",
     "no-underscore-dangle": "off",
     "no-param-reassign": "off",
+    "no-shadow": "off",
+    "no-await-in-loop": "off",
     "import-helpers/order-imports": [
       "warn",
       {
         "newlinesBetween": "always",
-        "groups": ["module", "/^~/", ["parent", "sibling", "index"]],
+        "groups": ["module", "/^~~/", "/^~/", ["parent", "sibling", "index"]],
         "alphabetize": { "order": "asc", "ignoreCase": true }
       }
     ],
 
-    "react/jsx-props-no-spreading": 0,
+    "import/no-extraneous-dependencies": [
+      "error",
+      { "devDependencies": ["**/*.test.ts*", "src/tests/**/*.ts*", "scripts/**/*.ts*"] }
+    ],
+
+    "react/jsx-props-no-spreading": "off",
     "react/jsx-filename-extension": ["warn", { "extensions": [".jsx", ".tsx"] }],
     "react/prop-types": "off",
     "react/require-default-props": "off",
@@ -72,10 +80,17 @@
     "react-hooks/exhaustive-deps": "error",
     "react/react-in-jsx-scope": "off",
     "react/jsx-no-bind": "off",
+    "jsx-a11y/anchor-is-valid": "off",
+    "react/function-component-definition": [
+      "error",
+      { "namedComponents": ["arrow-function"], "unnamedComponents": ["arrow-function"] }
+    ],
 
     "@typescript-eslint/indent": "off",
+    "@typescript-eslint/no-empty-function": "off",
     "@typescript-eslint/no-unused-vars": ["warn", { "varsIgnorePattern": "^_", "argsIgnorePattern": "^_" }],
     "@typescript-eslint/no-use-before-define": "off",
-    "@typescript-eslint/no-explicit-any": "warn"
+    "@typescript-eslint/no-explicit-any": "warn",
+    "@typescript-eslint/consistent-type-definitions": ["error", "interface"]
   }
 }

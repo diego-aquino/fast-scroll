@@ -1,9 +1,9 @@
 import { forwardRef, ForwardRefRenderFunction as FR } from 'react';
 
-import Button from '~/components/common/Button';
-import { PlusIcon, MinusIcon } from '~/components/icons';
-
-import Input, { Props as InputProps } from './Input';
+import Button from '~/components/common/Button/Button';
+import Input, { Props as InputProps } from '~/components/forms/Input/Input';
+import MinusIcon from '~/components/icons/MinusIcon';
+import PlusIcon from '~/components/icons/PlusIcon';
 
 const DEFAULT_MULTIPLIER_INCREMENT = 0.1;
 

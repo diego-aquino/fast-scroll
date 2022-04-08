@@ -1,4 +1,4 @@
-import { selectAllInputValue } from '~/utils/html';
+import { selectAllInputValue } from '~/utils/html/html';
 
 describe('HTML utilities', () => {
   describe('Input value selection', () => {

@@ -1,8 +1,9 @@
 import { screen, render, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import config from '~/config';
-import PopUpPage from '~/pages/PopUpPage';
+import config from '~/config/config';
+
+import PopUpPage from '../PopUpPage';
 
 describe('PopUpPage component', () => {
   it('should load the saved scroll speed multiplier on startup', async () => {

@@ -1,19 +1,15 @@
 name: Release
 
 on:
-  workflow_dispatch:
-    inputs:
-      mode:
-        type: choice
-        options: [patch, minor, major]
-        required: true
+  push:
+    tags: [v*]
 
 env:
   CACHE_VERSION: v1
 
 jobs:
-  github-release:
-    name: GitHub release
+  build-and-release-on-github:
+    name: Build and release on GitHub
     runs-on: ubuntu-latest
     environment: GitHub Release
 
@@ -38,37 +34,15 @@ jobs:
       - name: Install dependencies
         run: yarn --frozen-lockfile
 
-      - name: Upgrade version and save necessary data to env
-        run: |
-          PREVIOUS_VERSION=$(yarn --silent release:version)
-          yarn release:upgrade ${{ github.event.inputs.mode }}
-          RELEASE_VERSION=$(yarn --silent release:version)
-
-          git config --global user.email "${{ secrets.VERSION_UPGRADE_EMAIL }}"
-          git config --global user.name "${{ secrets.VERSION_UPGRADE_NAME }}"
-
-          git add .
-          git commit -m "chore: upgrade version from v$PREVIOUS_VERSION to v$RELEASE_VERSION"
-          git push
-
-          git fetch --tags
-          EXISTING_RELEASE_VERSION=$(git tag -l v$RELEASE_VERSION)
-
-          echo 'RELEASE_VERSION='$RELEASE_VERSION >> $GITHUB_ENV
-          echo 'EXISTING_RELEASE_VERSION='$EXISTING_RELEASE_VERSION >> $GITHUB_ENV
-
       - name: Generate build
-        if: ${{ env.EXISTING_RELEASE_VERSION == '' }}
         run: yarn build
 
       - name: Create GitHub release
-        if: ${{ env.EXISTING_RELEASE_VERSION == '' }}
         uses: ncipollo/release-action@v1
         with:
-          name: Fast Scroll v${{ env.RELEASE_VERSION }}
-          tag: v${{ env.RELEASE_VERSION }}
-          commit: main
-          draft: true
-          allowUpdates: false
-          artifacts: 'build/*.zip'
+          name: Fast Scroll ${{ github.event.ref }}
+          tag: ${{ github.event.ref }}
           token: ${{ secrets.GITHUB_TOKEN }}
+          artifacts: 'build/*.zip'
+          allowUpdates: false
+          draft: true

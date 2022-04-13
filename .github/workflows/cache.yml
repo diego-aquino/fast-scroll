@@ -1,0 +1,37 @@
+name: Cache
+
+on:
+  schedule:
+    - cron: '0 0 * * 1' # every monday at midnight
+  workflow_dispatch:
+
+concurrency: cache
+
+env:
+  CACHE_VERSION: v1
+
+jobs:
+  cache-canary:
+    name: Cache canary
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-dependencies-${{ env.CACHE_VERSION }}-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-dependencies-${{ env.CACHE_VERSION }}-
+            ${{ runner.os }}-dependencies-
+
+      - name: Install dependencies
+        run: yarn --frozen-lockfile

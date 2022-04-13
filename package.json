@@ -95,7 +95,7 @@
   },
   "lint-staged": {
     "*.(j|t)sx?": [
-      "yarn lint"
+      "yarn lint --fix"
     ],
     "*": [
       "yarn style:format"

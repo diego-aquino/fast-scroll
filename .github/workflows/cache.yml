@@ -1,17 +1,19 @@
-name: Release
+name: Cache
 
 on:
-  push:
-    tags: [v*]
+  schedule:
+    - cron: '0 0 * * 1' # every monday at midnight
+  workflow_dispatch:
+
+concurrency: cache
 
 env:
   CACHE_VERSION: v1
 
 jobs:
-  build-and-release-on-github:
-    name: Build and release on GitHub
+  cache-canary:
+    name: Cache canary
     runs-on: ubuntu-latest
-    environment: GitHub Release
 
     steps:
       - name: Checkout code
@@ -33,16 +35,3 @@ jobs:
 
       - name: Install dependencies
         run: yarn --frozen-lockfile
-
-      - name: Generate build
-        run: yarn build
-
-      - name: Create GitHub release
-        uses: ncipollo/release-action@v1
-        with:
-          name: Fast Scroll ${{ github.event.ref }}
-          tag: ${{ github.event.ref }}
-          token: ${{ secrets.GITHUB_TOKEN }}
-          artifacts: 'build/*.zip'
-          allowUpdates: false
-          draft: true

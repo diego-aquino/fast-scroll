@@ -8,6 +8,9 @@ on:
         options: [patch, minor, major]
         required: true
 
+env:
+  CACHE_VERSION: v1
+
 jobs:
   github-release:
     name: GitHub release
@@ -25,19 +28,15 @@ jobs:
 
       - name: Cache dependencies
         uses: actions/cache@v2
-        env:
-          CACHE_VERSION: v1
         with:
-          path: |
-            ~/.cache/yarn
-            node_modules
+          path: node_modules
           key: ${{ runner.os }}-dependencies-${{ env.CACHE_VERSION }}-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-dependencies-${{ env.CACHE_VERSION }}-
             ${{ runner.os }}-dependencies-
 
       - name: Install dependencies
-        run: yarn
+        run: yarn --frozen-lockfile
 
       - name: Upgrade version and save necessary data to env
         run: |

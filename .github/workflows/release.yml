@@ -40,8 +40,8 @@ jobs:
       - name: Create GitHub release
         uses: ncipollo/release-action@v1
         with:
-          name: Fast Scroll ${{ github.event.ref }}
-          tag: ${{ github.event.ref }}
+          name: Fast Scroll ${{ github.ref_name }}
+          tag: ${{ github.ref_name }}
           token: ${{ secrets.GITHUB_TOKEN }}
           artifacts: 'build/*.zip'
           allowUpdates: false

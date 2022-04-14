@@ -1,8 +1,11 @@
 const SCROLLING_OVERFLOW_VALUES = ['scroll', 'auto'];
 
-abstract class AbstractScrollAxis {
+export abstract class ScrollAxis {
   abstract scrollBy(element: Element, delta: number): void;
+
   abstract isScrollable(element: Element): boolean;
+
+  abstract perpendicularAxis(): ScrollAxis;
 
   findFirstScrollableElement(element: Element): Element {
     if (element === document.body && document.scrollingElement && this.isScrollable(document.scrollingElement)) {
@@ -17,7 +20,7 @@ abstract class AbstractScrollAxis {
   }
 }
 
-class HorizontalScrollAxis extends AbstractScrollAxis {
+class HorizontalScrollAxis extends ScrollAxis {
   scrollBy(element: Element, deltaX: number): void {
     element.scrollBy(deltaX, 0);
   }
@@ -35,9 +38,13 @@ class HorizontalScrollAxis extends AbstractScrollAxis {
 
     return hasHorizontalScrollEnabled && hasHorizontalContentOverflow;
   }
+
+  perpendicularAxis(): ScrollAxis {
+    return new VerticalScrollAxis();
+  }
 }
 
-class VerticalScrollAxis extends AbstractScrollAxis {
+class VerticalScrollAxis extends ScrollAxis {
   scrollBy(element: Element, deltaY: number): void {
     element.scrollBy(0, deltaY);
   }
@@ -54,6 +61,10 @@ class VerticalScrollAxis extends AbstractScrollAxis {
     const hasVerticalContentOverflow = element.scrollHeight > element.clientHeight;
 
     return hasVerticalScrollEnabled && hasVerticalContentOverflow;
+  }
+
+  perpendicularAxis(): ScrollAxis {
+    return new HorizontalScrollAxis();
   }
 }
 

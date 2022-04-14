@@ -5,6 +5,9 @@ on:
     types: [opened, synchronize, reopened]
   workflow_dispatch:
 
+env:
+  CACHE_VERSION: v1
+
 jobs:
   ci:
     name: CI
@@ -21,26 +24,18 @@ jobs:
 
       - name: Cache dependencies
         uses: actions/cache@v2
-        env:
-          CACHE_VERSION: v1
         with:
-          path: |
-            ~/.cache/yarn
-            node_modules
+          path: node_modules
           key: ${{ runner.os }}-dependencies-${{ env.CACHE_VERSION }}-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-dependencies-${{ env.CACHE_VERSION }}-
             ${{ runner.os }}-dependencies-
 
       - name: Install dependencies
-        run: yarn
+        run: yarn --frozen-lockfile
 
       - name: Check formatting style, lint code and check types
-        run: |
-          yarn concurrently \
-            'yarn style:check .' \
-            'yarn lint .' \
-            'yarn types:check'
+        run: yarn concurrently 'yarn style:check .' 'yarn lint .' 'yarn types:check'
 
       - name: Run tests
-        run: yarn test
+        run: yarn test:ci

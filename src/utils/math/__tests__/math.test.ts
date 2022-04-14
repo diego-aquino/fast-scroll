@@ -1,4 +1,4 @@
-import { round } from '~/utils/math';
+import { round } from '~/utils/math/math';
 
 describe('Math utilities', () => {
   describe('Rounding', () => {

@@ -94,9 +94,9 @@ export function hasSmoothScrollEnabled(element: Element): boolean {
 }
 
 export function enableSmoothScroll(element: HTMLElement): void {
-  element.style.scrollBehavior = 'smooth';
+  element.style.setProperty('scroll-behavior', 'smooth', 'important');
 }
 
 export function disableSmoothScroll(element: HTMLElement): void {
-  element.style.scrollBehavior = 'auto';
+  element.style.setProperty('scroll-behavior', 'auto', 'important');
 }

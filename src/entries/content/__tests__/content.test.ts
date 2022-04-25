@@ -110,4 +110,26 @@ describe('Content script', () => {
 
     expect(window.scrollBy).not.toHaveBeenCalled();
   });
+
+  it('should disable smooth scroll of an element, if present', async () => {
+    await main();
+
+    const element = createElementMock('div');
+
+    const setCSSProperty = jest.spyOn(CSSStyleDeclaration.prototype, 'setProperty');
+
+    jest.spyOn(element, 'scrollHeight', 'get').mockReturnValue(100);
+    jest.spyOn(element, 'clientHeight', 'get').mockReturnValue(50);
+
+    jest.spyOn(window, 'getComputedStyle').mockImplementation(() => {
+      return { scrollBehavior: 'smooth', overflowY: 'auto' } as CSSStyleDeclaration;
+    });
+
+    fireEvent.wheel(element, {
+      altKey: true,
+      bubbles: true,
+    });
+
+    expect(setCSSProperty).toHaveBeenCalledWith('scroll-behavior', 'auto', 'important');
+  });
 });

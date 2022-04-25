@@ -81,7 +81,7 @@ export const scrollAxis = {
   vertical: new VerticalScrollAxis(),
 };
 
-export function isWindow(element: Element | Window): element is Window {
+export function isWindow<GenericElement>(element: GenericElement | Window): element is Window {
   return element === window;
 }
 

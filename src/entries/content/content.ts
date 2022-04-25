@@ -1,4 +1,5 @@
 import config from '~/config/config';
+import { isSameOriginIframe } from '~/utils/html/html';
 import {
   enableSmoothScroll,
   disableSmoothScroll,
@@ -18,9 +19,22 @@ export async function main() {
 
 function attachWheelListener() {
   window.addEventListener('wheel', handleWheelEvent, { passive: false });
+
+  const pageURL = document.URL;
+
+  const iframes = Array.from(document.querySelectorAll('iframe'));
+  const iframesWithSameOrigin = iframes.filter((iframe) => {
+    return isSameOriginIframe(iframe, pageURL);
+  });
+
+  iframesWithSameOrigin.forEach((iframe) => {
+    iframe.addEventListener('load', () => {
+      iframe.contentWindow?.addEventListener('wheel', handleWheelEvent, { passive: false });
+    });
+  });
 }
 
-function handleWheelEvent(wheelEvent: WheelEvent) {
+export function handleWheelEvent(wheelEvent: WheelEvent) {
   if (wheelEvent.defaultPrevented) return;
   if (!wheelEvent.altKey || wheelEvent.ctrlKey) return;
 

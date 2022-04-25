@@ -3,7 +3,7 @@ import { fireEvent } from '@testing-library/dom';
 import config from '~/config/config';
 import { createElementMock } from '~/tests/mocks/html';
 
-import { main } from '../content';
+import { handleWheelEvent, main } from '../content';
 
 describe('Content script', () => {
   beforeEach(async () => {
@@ -17,7 +17,7 @@ describe('Content script', () => {
     await main();
 
     expect(configLoadFromStorage).toHaveBeenCalled();
-    expect(windowAddEventListener).toHaveBeenCalledWith('wheel', expect.any(Function), { passive: false });
+    expect(windowAddEventListener).toHaveBeenCalledWith('wheel', handleWheelEvent, { passive: false });
   });
 
   it('should apply the scroll speed multiplier to an element, after a wheel event with the alt key pressed', async () => {
@@ -112,8 +112,6 @@ describe('Content script', () => {
   });
 
   it('should disable smooth scroll of an element, if present', async () => {
-    await main();
-
     const element = createElementMock('div');
 
     const setCSSProperty = jest.spyOn(CSSStyleDeclaration.prototype, 'setProperty');
@@ -125,11 +123,68 @@ describe('Content script', () => {
       return { scrollBehavior: 'smooth', overflowY: 'auto' } as CSSStyleDeclaration;
     });
 
+    await main();
+
+    const scrollDeltaX = 50;
+    const scrollDeltaY = 100;
+
     fireEvent.wheel(element, {
       altKey: true,
       bubbles: true,
+      deltaX: scrollDeltaX,
+      deltaY: scrollDeltaY,
     });
 
     expect(setCSSProperty).toHaveBeenCalledWith('scroll-behavior', 'auto', 'important');
+
+    expect(element.scrollBy).toHaveBeenCalledWith(0, scrollDeltaY * config.scrollSpeedMultiplier());
+    expect(window.scrollBy).toHaveBeenCalledWith(scrollDeltaX * config.scrollSpeedMultiplier(), 0);
+  });
+
+  describe('Fast scroll in iframes', () => {
+    const pageURL = 'https://example.com';
+
+    beforeAll(() => {
+      jest.spyOn(document, 'URL', 'get').mockReturnValue(pageURL);
+    });
+
+    function createIframeMock(iframeSourceURL: string) {
+      const iframe = document.createElement('iframe');
+      iframe.src = iframeSourceURL;
+
+      jest.spyOn(iframe, 'addEventListener').mockImplementation((eventName, handler) => {
+        if (eventName !== 'load') return;
+
+        const loadEvent = new Event('load');
+        (handler as EventListener)(loadEvent);
+      });
+
+      jest.spyOn(iframe, 'contentWindow', 'get').mockReturnValue({
+        addEventListener: jest.fn(),
+      } as unknown as Window);
+
+      document.body.appendChild(iframe);
+
+      return iframe;
+    }
+
+    it('should support fast scrolling same-origin iframes', async () => {
+      const iframe = createIframeMock(pageURL);
+
+      await main();
+
+      expect(iframe.contentWindow?.addEventListener).toHaveBeenCalledWith('wheel', handleWheelEvent, {
+        passive: false,
+      });
+    });
+
+    it('should not fast scroll iframes with origins different from the page', async () => {
+      const differentOriginURL = 'https://example-iframe.com';
+      const iframe = createIframeMock(differentOriginURL);
+
+      await main();
+
+      expect(iframe.contentWindow?.addEventListener).not.toHaveBeenCalled();
+    });
   });
 });

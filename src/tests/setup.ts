@@ -11,3 +11,5 @@ declare namespace global {
 }
 
 global.browser = createBrowserMock();
+
+window.HTMLElement.prototype.scrollBy = jest.fn();

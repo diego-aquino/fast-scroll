@@ -55,6 +55,7 @@
     "no-underscore-dangle": "off",
     "no-param-reassign": "off",
     "no-shadow": "off",
+    "arrow-body-style": "off",
     "no-await-in-loop": "off",
     "import-helpers/order-imports": [
       "warn",

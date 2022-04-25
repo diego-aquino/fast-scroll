@@ -1,13 +1,13 @@
 import type { Browser } from 'webextension-polyfill';
 
-import { createBrowserMock } from './mocks';
+import { createBrowserMock } from './mocks/browser';
 
 import '@testing-library/jest-dom';
 import '@testing-library/jest-dom/extend-expect';
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
-declare namespace globalThis {
+declare namespace global {
   let browser: Browser;
 }
 
-globalThis.browser = createBrowserMock();
+global.browser = createBrowserMock();

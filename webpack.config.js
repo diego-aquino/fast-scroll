@@ -1,5 +1,6 @@
 const path = require('path');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ProgressWebpackPlugin = require('progress-webpack-plugin');
 
@@ -25,8 +26,11 @@ const FOCUS_VISIBLE_POLYFILL_PATH = path.resolve(
   'focus-visible.min.js',
 );
 
+const MODE = process.env.NODE_ENV ?? 'development';
+const ENABLE_BUNDLE_ANALYZER = process.env.ANALYZE_BUNDLE === 'true';
+
 module.exports = {
-  mode: process.env.NODE_ENV ?? 'development',
+  mode: MODE,
   devtool: false,
   entry: {
     popup: path.resolve(ENTRY_POINTS_DIR, 'popup', 'popup.tsx'),
@@ -37,7 +41,7 @@ module.exports = {
     chunkFilename: '[id].js',
   },
   resolve: {
-    extensions: ['.js', '.jsx', '.ts', '.tsx'],
+    extensions: ['.js', '.jsx', '.ts', '.tsx', '.mjs', '.json'],
   },
   devServer: {
     hot: false,
@@ -72,7 +76,8 @@ module.exports = {
       ],
     }),
     new ProgressWebpackPlugin(),
-  ],
+    ENABLE_BUNDLE_ANALYZER && new BundleAnalyzerPlugin(),
+  ].filter((plugin) => !!plugin),
 
   module: {
     rules: [

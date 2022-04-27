@@ -1,10 +1,13 @@
 import config from '~/config/config';
+import { isSameOriginIframe } from '~/utils/html/html';
 import {
   enableSmoothScroll,
   disableSmoothScroll,
   hasSmoothScrollEnabled,
   scrollAxis,
   ScrollAxis,
+  isWindow,
+  isHTMLElement,
 } from '~/utils/scroll/scroll';
 
 main();
@@ -16,9 +19,22 @@ export async function main() {
 
 function attachWheelListener() {
   window.addEventListener('wheel', handleWheelEvent, { passive: false });
+
+  const pageURL = document.URL;
+
+  const iframes = Array.from(document.querySelectorAll('iframe'));
+  const iframesWithSameOrigin = iframes.filter((iframe) => {
+    return isSameOriginIframe(iframe, pageURL);
+  });
+
+  iframesWithSameOrigin.forEach((iframe) => {
+    iframe.addEventListener('load', () => {
+      iframe.contentWindow?.addEventListener('wheel', handleWheelEvent, { passive: false });
+    });
+  });
 }
 
-function handleWheelEvent(wheelEvent: WheelEvent) {
+export function handleWheelEvent(wheelEvent: WheelEvent) {
   if (wheelEvent.defaultPrevented) return;
   if (!wheelEvent.altKey || wheelEvent.ctrlKey) return;
 
@@ -34,13 +50,13 @@ function applyScrollSpeedMultiplier(scrollDelta: number, baseScrollAxis: ScrollA
 
   const selectedScrollAxis = wheelEvent.shiftKey ? baseScrollAxis.perpendicularAxis() : baseScrollAxis;
 
-  const elementToScroll = selectedScrollAxis.findFirstScrollableElement(targetElement) as HTMLElement;
-  const elementHasSmoothScroll = hasSmoothScrollEnabled(elementToScroll);
+  const elementToScroll = selectedScrollAxis.findFirstScrollableElement(targetElement);
+  const elementHasSmoothScroll = !isWindow(elementToScroll) && hasSmoothScrollEnabled(elementToScroll);
 
   const rootElement = document.querySelector(':root') as HTMLElement;
   const rootElementHasSmoothScroll = hasSmoothScrollEnabled(rootElement);
 
-  if (elementHasSmoothScroll) {
+  if (elementHasSmoothScroll && isHTMLElement(elementToScroll)) {
     disableSmoothScroll(elementToScroll);
   }
   if (rootElementHasSmoothScroll) {
@@ -50,7 +66,7 @@ function applyScrollSpeedMultiplier(scrollDelta: number, baseScrollAxis: ScrollA
   const multipliedScrollDelta = scrollDelta * config.scrollSpeedMultiplier();
   selectedScrollAxis.scrollBy(elementToScroll, multipliedScrollDelta);
 
-  if (elementHasSmoothScroll) {
+  if (elementHasSmoothScroll && isHTMLElement(elementToScroll)) {
     enableSmoothScroll(elementToScroll);
   }
   if (rootElementHasSmoothScroll) {

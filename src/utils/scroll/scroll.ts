@@ -1,19 +1,23 @@
 const SCROLLING_OVERFLOW_VALUES = ['scroll', 'auto'];
 
 export abstract class ScrollAxis {
-  abstract scrollBy(element: Element, delta: number): void;
+  abstract scrollBy(element: Window | Element, delta: number): void;
 
   abstract isScrollable(element: Element): boolean;
 
   abstract perpendicularAxis(): ScrollAxis;
 
-  findFirstScrollableElement(element: Element): Element {
+  findFirstScrollableElement(element: Element): Window | Element {
     if (element === document.body && document.scrollingElement && this.isScrollable(document.scrollingElement)) {
-      return document.scrollingElement;
+      return document.scrollingElement as HTMLElement;
     }
 
-    if (this.isScrollable(element) || !element.parentElement) {
+    if (this.isScrollable(element)) {
       return element;
+    }
+
+    if (!element.parentElement) {
+      return window;
     }
 
     return this.findFirstScrollableElement(element.parentElement);
@@ -21,15 +25,17 @@ export abstract class ScrollAxis {
 }
 
 class HorizontalScrollAxis extends ScrollAxis {
-  scrollBy(element: Element, deltaX: number): void {
+  override scrollBy(element: Window | Element, deltaX: number): void {
     element.scrollBy(deltaX, 0);
   }
 
-  isScrollable(element: Element): boolean {
-    const rootElement = document.querySelector(':root');
+  override isScrollable(element: Element): boolean {
     const computedOverflowX = window.getComputedStyle(element).overflowX;
 
-    if (element === rootElement && computedOverflowX === 'visible') {
+    const rootElement = document.querySelector(':root');
+    const bodyElement = document.body;
+
+    if (computedOverflowX === 'visible' && (element === rootElement || element === bodyElement)) {
       return true;
     }
 
@@ -39,21 +45,23 @@ class HorizontalScrollAxis extends ScrollAxis {
     return hasHorizontalScrollEnabled && hasHorizontalContentOverflow;
   }
 
-  perpendicularAxis(): ScrollAxis {
+  override perpendicularAxis(): ScrollAxis {
     return new VerticalScrollAxis();
   }
 }
 
 class VerticalScrollAxis extends ScrollAxis {
-  scrollBy(element: Element, deltaY: number): void {
+  override scrollBy(element: Window | Element, deltaY: number): void {
     element.scrollBy(0, deltaY);
   }
 
-  isScrollable(element: Element): boolean {
-    const rootElement = document.querySelector(':root');
+  override isScrollable(element: Element): boolean {
     const computedOverflowY = window.getComputedStyle(element).overflowY;
 
-    if (element === rootElement && computedOverflowY === 'visible') {
+    const rootElement = document.querySelector(':root');
+    const bodyElement = document.body;
+
+    if (computedOverflowY === 'visible' && (element === rootElement || element === bodyElement)) {
       return true;
     }
 
@@ -63,7 +71,7 @@ class VerticalScrollAxis extends ScrollAxis {
     return hasVerticalScrollEnabled && hasVerticalContentOverflow;
   }
 
-  perpendicularAxis(): ScrollAxis {
+  override perpendicularAxis(): ScrollAxis {
     return new HorizontalScrollAxis();
   }
 }
@@ -73,14 +81,22 @@ export const scrollAxis = {
   vertical: new VerticalScrollAxis(),
 };
 
+export function isWindow<GenericElement>(element: GenericElement | Window): element is Window {
+  return element === window;
+}
+
+export function isHTMLElement(element: Element | HTMLElement): element is HTMLElement {
+  return Object.hasOwn(element, 'style');
+}
+
 export function hasSmoothScrollEnabled(element: Element): boolean {
   return window.getComputedStyle(element).scrollBehavior === 'smooth';
 }
 
 export function enableSmoothScroll(element: HTMLElement): void {
-  element.style.scrollBehavior = 'smooth';
+  element.style.setProperty('scroll-behavior', 'smooth', 'important');
 }
 
 export function disableSmoothScroll(element: HTMLElement): void {
-  element.style.scrollBehavior = 'auto';
+  element.style.setProperty('scroll-behavior', 'auto', 'important');
 }

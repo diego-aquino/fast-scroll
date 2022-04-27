@@ -25,7 +25,7 @@
     "test:coverage": "yarn test --coverage",
     "types:check": "tsc --pretty --noEmit",
     "pre:commit": "lint-staged",
-    "pre:push": "concurrently 'yarn types:check' 'yarn lint .' && yarn test",
+    "pre:push": "concurrently 'yarn types:check' 'yarn lint .' 'yarn test'",
     "prepare": "husky install"
   },
   "dependencies": {

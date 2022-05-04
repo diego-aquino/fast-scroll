@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import 'tailwindcss/tailwind.css'; // eslint-disable-line import/no-extraneous-dependencies
+import '~/styles/global.css';
 
 import PopUpPage from '~/components/pages/PopUpPage/PopUpPage';
 

@@ -23,5 +23,13 @@
     "default_popup": "popup.html"
   },
   "permissions": ["storage"],
-  "content_scripts": [{ "matches": ["<all_urls>"], "js": ["browser-polyfill.min.js", "content.js"] }]
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "run_at": "document_idle",
+      "match_about_blank": true,
+      "match_origin_as_fallback": true,
+      "js": ["browser-polyfill.min.js", "content.js"]
+    }
+  ]
 }

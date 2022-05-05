@@ -20,7 +20,7 @@
     "style": "prettier --loglevel warn --ignore-unknown --no-error-on-unmatched-pattern",
     "style:check": "yarn style --check",
     "style:format": "yarn style --write",
-    "test": "node --expose-gc --no-compilation-cache ./node_modules/.bin/jest --no-cache --logHeapUsage --maxWorkers=${JEST_MAX_WORKERS:=50%}",
+    "test": "node --expose-gc --no-compilation-cache ./node_modules/.bin/jest --logHeapUsage --maxWorkers=${JEST_MAX_WORKERS:=50%}",
     "test:ci": "JEST_MAX_WORKERS=1 yarn test",
     "test:coverage": "yarn test --coverage",
     "types:check": "tsc --pretty --noEmit",

@@ -1,4 +1,4 @@
-import { Storage } from 'webextension-polyfill';
+import browser, { Storage } from 'webextension-polyfill';
 
 import { Config, StorageKeys } from '~/config/config';
 

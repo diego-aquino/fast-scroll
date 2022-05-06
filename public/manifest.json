@@ -12,6 +12,7 @@
     "256": "images/brand/icons/256.png"
   },
   "action": {
+    "default_title": "Fast Scroll",
     "default_icon": {
       "16": "images/brand/favicons/16.png",
       "32": "images/brand/favicons/32.png",
@@ -19,17 +20,11 @@
       "128": "images/brand/favicons/128.png",
       "256": "images/brand/favicons/256.png"
     },
-    "default_title": "Fast Scroll",
     "default_popup": "popup.html"
   },
-  "permissions": ["storage"],
-  "content_scripts": [
-    {
-      "matches": ["<all_urls>"],
-      "run_at": "document_idle",
-      "match_about_blank": true,
-      "match_origin_as_fallback": true,
-      "js": ["browser-polyfill.min.js", "content.js"]
-    }
-  ]
+  "permissions": ["storage", "scripting", "tabs"],
+  "host_permissions": ["http://*/*", "https://*/*", "file://*"],
+  "background": {
+    "service_worker": "background.js"
+  }
 }

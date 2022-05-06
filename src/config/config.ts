@@ -1,3 +1,5 @@
+import browser from 'webextension-polyfill';
+
 export enum StorageKeys { // eslint-disable-line no-shadow
   SCROLL_SPEED_MULTIPLIER = 'SCROLL_SPEED_MULTIPLIER',
 }

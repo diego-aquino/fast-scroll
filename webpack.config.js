@@ -11,13 +11,6 @@ const ENTRY_POINTS_DIR = path.resolve(__dirname, 'src', 'entries');
 const PUBLIC_DIR = path.resolve(__dirname, 'public');
 const OUTPUT_DIR = path.resolve(__dirname, 'build', `fast-scroll-v${version}`).replace(/\./g, '-');
 
-const BROWSER_POLYFILL_PATH = path.resolve(
-  __dirname,
-  'node_modules',
-  'webextension-polyfill',
-  'dist',
-  'browser-polyfill.min.js',
-);
 const FOCUS_VISIBLE_POLYFILL_PATH = path.resolve(
   __dirname,
   'node_modules',
@@ -35,6 +28,7 @@ module.exports = {
   entry: {
     popup: path.resolve(ENTRY_POINTS_DIR, 'popup', 'popup.tsx'),
     content: path.resolve(ENTRY_POINTS_DIR, 'content', 'content.ts'),
+    background: path.resolve(ENTRY_POINTS_DIR, 'background', 'background.ts'),
   },
   output: {
     path: OUTPUT_DIR,
@@ -48,9 +42,7 @@ module.exports = {
     liveReload: false,
     webSocketServer: false,
     watchFiles: ['src/**/*.ts', 'public/**/*'],
-    devMiddleware: {
-      writeToDisk: true,
-    },
+    devMiddleware: { writeToDisk: true },
   },
   cache: {
     type: 'filesystem',
@@ -66,12 +58,7 @@ module.exports = {
     }),
     new CopyWebpackPlugin({
       patterns: [
-        {
-          from: PUBLIC_DIR,
-          to: OUTPUT_DIR,
-          globOptions: { ignore: ['**/popup.html'] },
-        },
-        { from: BROWSER_POLYFILL_PATH, to: OUTPUT_DIR },
+        { from: PUBLIC_DIR, to: OUTPUT_DIR, globOptions: { ignore: ['**/popup.html'] } },
         { from: FOCUS_VISIBLE_POLYFILL_PATH, to: OUTPUT_DIR },
       ],
     }),

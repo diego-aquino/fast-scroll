@@ -1,12 +1,20 @@
 import { chalk } from 'zx';
 
-class Log {
+export class Log {
+  private nextStep = 1;
+
+  constructor(private totalSteps?: number) {}
+
   info(message: string) {
     console.log(`${chalk.blue('info')} ${message}`);
   }
 
-  progress(message: string, currentStep: number, totalSteps: number) {
-    console.log(`${chalk.dim(`[${currentStep}/${totalSteps}]`)} ${message}`);
+  progress(message: string) {
+    if (this.totalSteps === undefined) {
+      console.log(`${chalk.dim('...')} ${message}`);
+    } else {
+      console.log(`${chalk.dim(`[${this.nextStep++}/${this.totalSteps}]`)} ${message}`);
+    }
   }
 
   success(message: string) {

@@ -6,11 +6,12 @@ import { prettifyFiles } from '~scripts/utils/format';
 type UpgradeMode = 'patch' | 'minor' | 'major';
 const UPGRADE_MODES = new Set(['patch', 'minor', 'major']);
 
-main();
+upgradeVersion();
 
-async function main(): Promise<void> {
+async function upgradeVersion(): Promise<string> {
   const { upgradeMode } = processCLIArguments();
-  await upgradeVersionAcrossFiles(upgradeMode);
+  const upgradedVersion = await upgradeVersionAcrossFiles(upgradeMode);
+  return upgradedVersion;
 }
 
 function processCLIArguments(): { upgradeMode: UpgradeMode } {
@@ -33,7 +34,7 @@ function processCLIArguments(): { upgradeMode: UpgradeMode } {
   return { upgradeMode };
 }
 
-async function upgradeVersionAcrossFiles(upgradeMode: UpgradeMode): Promise<void> {
+async function upgradeVersionAcrossFiles(upgradeMode: UpgradeMode): Promise<string> {
   const [manifestJSON, packageJSON] = await Promise.all([
     filesystem.readJSON(MANIFEST_JSON_PATH),
     filesystem.readJSON(PACKAGE_JSON_PATH),
@@ -49,6 +50,8 @@ async function upgradeVersionAcrossFiles(upgradeMode: UpgradeMode): Promise<void
   ]);
 
   await prettifyFiles([MANIFEST_JSON_PATH, PACKAGE_JSON_PATH]);
+
+  return upgradedVersion;
 }
 
 function getUpgradedVersion(currentVersion: string, upgradeMode: UpgradeMode): string {
@@ -102,3 +105,5 @@ function upgradeVersionComponents(parsedVersion: ParsedVersion, upgradeMode: Upg
 function formatVersionComponents(parsedVersion: ParsedVersion): string {
   return `${parsedVersion.major}.${parsedVersion.minor}.${parsedVersion.patch}`;
 }
+
+export default upgradeVersion;

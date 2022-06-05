@@ -1,8 +1,8 @@
 name: Cache
 
 on:
-  schedule:
-    - cron: '0 0 * * 1' # every monday at midnight
+  push:
+    branches: [canary]
   workflow_dispatch:
 
 concurrency: cache

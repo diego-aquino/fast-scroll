@@ -34,6 +34,7 @@
     "prettier/prettier": "error",
 
     "indent": "off",
+    "no-useless-constructor": "off",
     "comma-dangle": ["warn", "always-multiline"],
     "implicit-arrow-linebreak": "off",
     "no-plusplus": "off",

@@ -2,9 +2,9 @@ import filesystem from 'fs-extra';
 
 import { PACKAGE_JSON_PATH } from '~scripts/config';
 
-main();
+getVersion();
 
-async function main() {
+async function getVersion() {
   const version = await getCurrentVersion();
   console.log(version);
 }

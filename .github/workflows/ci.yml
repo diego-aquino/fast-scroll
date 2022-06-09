@@ -35,7 +35,7 @@ jobs:
         run: yarn --frozen-lockfile
 
       - name: Check formatting style, lint code and check types
-        run: yarn concurrently 'yarn style:check .' 'yarn lint .' 'yarn types:check'
+        run: yarn concurrently 'yarn types:check' 'yarn lint . --max-warnings=0' 'yarn style:check .'
 
       - name: Run tests
         run: yarn test:ci

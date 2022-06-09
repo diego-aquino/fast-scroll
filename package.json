@@ -1,6 +1,6 @@
 {
   "name": "fast-scroll",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Navigate faster by increasing your browser's scrolling speed.",
   "main": "index.js",
   "repository": "git@github.com:diego-aquino/fast-scroll.git",

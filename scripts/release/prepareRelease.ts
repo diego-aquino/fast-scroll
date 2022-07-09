@@ -1,6 +1,6 @@
 import { $ } from 'zx';
 
-import { PRODUCTION_BRANCH, REPOSITORY_URL } from '~scripts/config';
+import { PRODUCTION_BRANCH, REPOSITORY_URL } from '~scripts/constants';
 import { pipedToStandardOutputs } from '~scripts/utils/commands';
 import { Log } from '~scripts/utils/log';
 
